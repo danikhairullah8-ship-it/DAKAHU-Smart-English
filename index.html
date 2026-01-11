@@ -1,0 +1,2759 @@
+<!doctype html>
+<html lang="id" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DAKAHU SmartEnglish</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&amp;family=Space+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+    
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .font-display {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .glass-strong {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    /* Animations */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.4); }
+      50% { box-shadow: 0 0 50px rgba(124, 58, 237, 0.8); }
+    }
+    
+    @keyframes slide-in-up {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    
+    @keyframes slide-in-left {
+      from { transform: translateX(-30px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    
+    @keyframes scale-in {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -1000px 0; }
+      100% { background-position: 1000px 0; }
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes spin-wheel {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(1440deg); }
+    }
+    
+    .animate-float { animation: float 6s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .animate-slide-in-up { animation: slide-in-up 0.6s ease-out forwards; }
+    .animate-slide-in-left { animation: slide-in-left 0.6s ease-out forwards; }
+    .animate-scale-in { animation: scale-in 0.5s ease-out forwards; }
+    .animate-spin { animation: spin 1s linear infinite; }
+    .animate-spin-wheel { animation: spin-wheel 4s cubic-bezier(0.17, 0.67, 0.12, 0.99) forwards; }
+    
+    .shimmer {
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      background-size: 1000px 100%;
+      animation: shimmer 2s infinite;
+    }
+    
+    /* Card hover effects */
+    .hover-lift {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .hover-lift:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .hover-lift:active {
+      transform: translateY(-4px) scale(1.01);
+    }
+    
+    /* Progress bar */
+    .progress-bar {
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    /* Bottom nav */
+    .nav-item {
+      transition: all 0.3s ease;
+    }
+    
+    .nav-item.active {
+      color: #a78bfa;
+    }
+    
+    /* Gradient text */
+    .gradient-text {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .gradient-purple {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .gradient-blue {
+      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    }
+    
+    .gradient-pink {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    }
+    
+    .gradient-orange {
+      background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    }
+    
+    .gradient-green {
+      background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(167, 139, 250, 0.5);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(167, 139, 250, 0.8);
+    }
+    
+    /* Loading skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+    
+    /* Badge styles */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    /* Level indicator */
+    .level-badge {
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      color: #1a1a2e;
+      font-weight: 800;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    }
+    
+    /* Stats card */
+    .stat-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+    
+    /* Game card styles */
+    .game-card {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .game-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .game-card:hover::before {
+      left: 100%;
+    }
+    
+    /* Spinner Wheel */
+    .spinner-wheel {
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      position: relative;
+      border: 8px solid #fff;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+      overflow: hidden;
+    }
+    
+    .spinner-segment {
+      position: absolute;
+      width: 50%;
+      height: 50%;
+      top: 0;
+      left: 50%;
+      transform-origin: 0 100%;
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+    
+    .spinner-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #ffd700, #ffed4e);
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    
+    .spinner-pointer {
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 20px solid transparent;
+      border-right: 20px solid transparent;
+      border-top: 40px solid #ff0000;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+      z-index: 20;
+    }
+    
+    /* Audio Control Button */
+    .audio-control {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .audio-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .audio-btn:hover {
+      transform: scale(1.1);
+    }
+    
+    .audio-btn:active {
+      transform: scale(0.95);
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full flex flex-col overflow-hidden" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);"><!-- Audio Controls -->
+   <div class="audio-control"><button id="music-toggle" class="audio-btn glass-strong" onclick="toggleMusic()" title="Toggle Background Music"> 🎵 </button> <button id="sfx-toggle" class="audio-btn glass-strong" onclick="toggleSFX()" title="Toggle Sound Effects"> 🔊 </button>
+   </div><!-- Main Content Area -->
+   <div id="content-area" class="flex-1 overflow-y-auto pb-20"><!-- HOME SCREEN -->
+    <div id="home-screen" class="min-h-full p-4 md:p-6"><!-- Header -->
+     <div class="flex items-center justify-between mb-6">
+      <div>
+       <h1 id="welcome-msg" class="text-white text-xl md:text-2xl font-bold">Welcome back! 👋</h1>
+       <p id="user-name-display" class="text-purple-300 text-sm">Guest User</p>
+      </div><button onclick="showNotifications()" class="relative glass hover-lift p-3 rounded-xl"> <span class="text-2xl">🔔</span>
+       <div id="notif-badge" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center font-bold hidden">
+        3
+       </div></button>
+     </div><!-- User Stats Card -->
+     <div class="glass-strong rounded-2xl p-6 mb-6 animate-slide-in-up">
+      <div class="flex items-center justify-between mb-4">
+       <div class="flex items-center gap-3">
+        <div id="home-avatar" class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-3xl cursor-pointer hover:scale-110 transition-transform" onclick="openPhotoSelector()">
+         🎓
+        </div>
+        <div>
+         <p class="text-white font-bold text-lg" id="display-player-name">Start Learning</p>
+         <p class="text-purple-300 text-sm" id="display-level">Beginner</p>
+        </div>
+       </div>
+       <div class="level-badge">
+        LV <span id="display-level-num">1</span>
+       </div>
+      </div><!-- XP Progress -->
+      <div class="mb-3">
+       <div class="flex justify-between text-xs text-purple-300 mb-1"><span>XP Progress</span> <span><span id="current-xp">0</span> / <span id="next-level-xp">100</span></span>
+       </div>
+       <div class="w-full bg-purple-900/30 rounded-full h-3 overflow-hidden">
+        <div id="xp-progress-bar" class="h-full gradient-purple progress-bar" style="width: 0%"></div>
+       </div>
+      </div><!-- Stats Grid -->
+      <div class="grid grid-cols-3 gap-2">
+       <div class="stat-card text-center">
+        <p class="text-purple-300 text-xs mb-1">Daily Streak</p>
+        <p class="text-white font-bold text-lg">🔥 <span id="daily-streak">0</span></p>
+       </div>
+       <div class="stat-card text-center">
+        <p class="text-purple-300 text-xs mb-1">Lessons</p>
+        <p class="text-white font-bold text-lg">📚 <span id="lessons-done">0</span></p>
+       </div>
+       <div class="stat-card text-center">
+        <p class="text-purple-300 text-xs mb-1">Score</p>
+        <p class="text-white font-bold text-lg">⭐ <span id="total-score">0</span></p>
+       </div>
+      </div>
+     </div><!-- Quick Actions -->
+     <div class="mb-6">
+      <h2 class="text-white font-bold text-lg mb-3">Quick Actions ⚡</h2>
+      <div class="grid grid-cols-2 gap-3"><button onclick="navigateTo('learn')" class="hover-lift glass-strong rounded-2xl p-4 text-left">
+        <div class="w-12 h-12 gradient-blue rounded-xl flex items-center justify-center text-2xl mb-2">
+         📖
+        </div><p class="text-white font-semibold">Daily Lesson</p><p class="text-purple-300 text-xs">5 min read</p></button> <button onclick="navigateTo('practice')" class="hover-lift glass-strong rounded-2xl p-4 text-left">
+        <div class="w-12 h-12 gradient-pink rounded-xl flex items-center justify-center text-2xl mb-2">
+         ✍️
+        </div><p class="text-white font-semibold">Practice Now</p><p class="text-purple-300 text-xs">Test skills</p></button>
+      </div>
+     </div><!-- Continue Learning -->
+     <div class="mb-6">
+      <h2 class="text-white font-bold text-lg mb-3">Continue Learning 🎯</h2>
+      <div id="recent-lessons" class="space-y-3">
+       <div class="glass-strong rounded-xl p-4 hover-lift cursor-pointer" onclick="openLesson('present-perfect')">
+        <div class="flex items-center justify-between mb-2">
+         <p class="text-white font-semibold text-sm">Present Perfect Tense</p><span class="badge bg-purple-500/20 text-purple-300">Grammar</span>
+        </div>
+        <div class="w-full bg-purple-900/30 rounded-full h-2 mb-2">
+         <div class="h-full gradient-purple rounded-full" style="width: 75%"></div>
+        </div>
+        <p class="text-purple-300 text-xs">75% complete</p>
+       </div>
+       <div class="glass-strong rounded-xl p-4 hover-lift cursor-pointer" onclick="openLesson('phrasal-verbs')">
+        <div class="flex items-center justify-between mb-2">
+         <p class="text-white font-semibold text-sm">Common Phrasal Verbs</p><span class="badge bg-blue-500/20 text-blue-300">Vocabulary</span>
+        </div>
+        <div class="w-full bg-purple-900/30 rounded-full h-2 mb-2">
+         <div class="h-full gradient-blue rounded-full" style="width: 50%"></div>
+        </div>
+        <p class="text-purple-300 text-xs">50% complete</p>
+       </div>
+       <div class="glass-strong rounded-xl p-4 hover-lift cursor-pointer" onclick="openLesson('business-english')">
+        <div class="flex items-center justify-between mb-2">
+         <p class="text-white font-semibold text-sm">Business English</p><span class="badge bg-pink-500/20 text-pink-300">Conversation</span>
+        </div>
+        <div class="w-full bg-purple-900/30 rounded-full h-2 mb-2">
+         <div class="h-full gradient-pink rounded-full" style="width: 25%"></div>
+        </div>
+        <p class="text-purple-300 text-xs">25% complete</p>
+       </div>
+      </div>
+     </div><!-- Achievements -->
+     <div>
+      <div class="flex items-center justify-between mb-3">
+       <h2 class="text-white font-bold text-lg">Achievements 🏆</h2><button onclick="viewAllBadges()" class="text-purple-300 text-sm hover:text-purple-200">View All</button>
+      </div>
+      <div id="badges-grid" class="grid grid-cols-4 gap-2"></div>
+     </div>
+    </div><!-- LEARN SCREEN -->
+    <div id="learn-screen" class="min-h-full p-4 md:p-6 hidden">
+     <div class="mb-6">
+      <h1 class="text-white font-display text-2xl md:text-3xl font-bold mb-2">Learn English 📚</h1>
+      <p class="text-purple-300 text-sm">Master English step by step</p>
+     </div><!-- Learning Path Progress -->
+     <div class="glass-strong rounded-2xl p-6 mb-6">
+      <h3 class="text-white font-semibold mb-4">Your Learning Path</h3>
+      <div class="relative">
+       <div class="absolute left-6 top-0 bottom-0 w-1 bg-purple-900/30"></div>
+       <div id="learning-path" class="space-y-4">
+        <div class="relative flex items-center gap-4 pl-2">
+         <div class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center bg-green-500"><span class="text-white font-bold">✓</span>
+         </div>
+         <div class="flex-1 glass-strong rounded-xl p-3 hover-lift cursor-pointer" onclick="openLearningModule('welcome')">
+          <p class="text-white font-semibold text-sm">Welcome to English</p>
+          <p class="text-green-300 text-xs">Completed ✓</p>
+         </div>
+        </div>
+        <div class="relative flex items-center gap-4 pl-2">
+         <div class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center bg-green-500"><span class="text-white font-bold">✓</span>
+         </div>
+         <div class="flex-1 glass-strong rounded-xl p-3 hover-lift cursor-pointer" onclick="openLearningModule('basic-grammar')">
+          <p class="text-white font-semibold text-sm">Basic Grammar</p>
+          <p class="text-green-300 text-xs">Completed ✓</p>
+         </div>
+        </div>
+        <div class="relative flex items-center gap-4 pl-2">
+         <div class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center bg-purple-500 animate-pulse"><span class="text-white font-bold">3</span>
+         </div>
+         <div class="flex-1 glass-strong rounded-xl p-3 hover-lift cursor-pointer border-2 border-purple-500/50" onclick="openLearningModule('vocabulary')">
+          <p class="text-white font-semibold text-sm">Essential Vocabulary</p>
+          <p class="text-purple-300 text-xs">In Progress...</p>
+         </div>
+        </div>
+        <div class="relative flex items-center gap-4 pl-2">
+         <div class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center bg-gray-600"><span class="text-white font-bold">4</span>
+         </div>
+         <div class="flex-1 glass-strong rounded-xl p-3 opacity-50">
+          <p class="text-white font-semibold text-sm">Sentence Structure</p>
+          <p class="text-purple-300 text-xs">Locked 🔒</p>
+         </div>
+        </div>
+        <div class="relative flex items-center gap-4 pl-2">
+         <div class="relative z-10 w-10 h-10 rounded-full flex items-center justify-center bg-gray-600"><span class="text-white font-bold">5</span>
+         </div>
+         <div class="flex-1 glass-strong rounded-xl p-3 opacity-50">
+          <p class="text-white font-semibold text-sm">Conversation Skills</p>
+          <p class="text-purple-300 text-xs">Locked 🔒</p>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div><!-- Categories -->
+     <div class="mb-6">
+      <h3 class="text-white font-semibold mb-3">Browse by Category</h3>
+      <div class="grid grid-cols-2 gap-3"><button onclick="openCategory('grammar')" class="hover-lift glass-strong rounded-2xl p-4 text-left">
+        <div class="text-3xl mb-2">
+         📝
+        </div><p class="text-white font-semibold">Grammar</p><p class="text-purple-300 text-xs">25 lessons</p>
+        <div class="mt-2 text-xs text-purple-200">
+         ✓ 8 completed
+        </div></button> <button onclick="openCategory('vocabulary')" class="hover-lift glass-strong rounded-2xl p-4 text-left">
+        <div class="text-3xl mb-2">
+         💬
+        </div><p class="text-white font-semibold">Vocabulary</p><p class="text-purple-300 text-xs">40 lessons</p>
+        <div class="mt-2 text-xs text-purple-200">
+         ✓ 5 completed
+        </div></button> <button onclick="openCategory('pronunciation')" class="hover-lift glass-strong rounded-2xl p-4 text-left">
+        <div class="text-3xl mb-2">
+         🗣️
+        </div><p class="text-white font-semibold">Pronunciation</p><p class="text-purple-300 text-xs">30 lessons</p>
+        <div class="mt-2 text-xs text-purple-200">
+         ✓ 3 completed
+        </div></button> <button onclick="openCategory('conversation')" class="hover-lift glass-strong rounded-2xl p-4 text-left">
+        <div class="text-3xl mb-2">
+         💭
+        </div><p class="text-white font-semibold">Conversation</p><p class="text-purple-300 text-xs">35 lessons</p>
+        <div class="mt-2 text-xs text-purple-200">
+         ✓ 2 completed
+        </div></button>
+      </div>
+     </div>
+    </div><!-- PRACTICE SCREEN -->
+    <div id="practice-screen" class="min-h-full p-4 md:p-6 hidden">
+     <div class="mb-6">
+      <h1 class="text-white font-display text-2xl md:text-3xl font-bold mb-2">Practice Hub ✍️</h1>
+      <p class="text-purple-300 text-sm">Sharpen your English skills</p>
+     </div><!-- Practice Stats -->
+     <div class="grid grid-cols-2 gap-3 mb-6">
+      <div class="glass-strong rounded-xl p-4">
+       <p class="text-purple-300 text-xs mb-1">Practice Score</p>
+       <p class="text-white font-bold text-2xl">⭐ <span id="practice-score-display">0</span></p>
+      </div>
+      <div class="glass-strong rounded-xl p-4">
+       <p class="text-purple-300 text-xs mb-1">Accuracy</p>
+       <p class="text-white font-bold text-2xl">🎯 <span id="accuracy-display">0</span>%</p>
+      </div>
+     </div><!-- Practice Types -->
+     <div class="space-y-3"><button onclick="startPractice('quick')" class="w-full hover-lift glass-strong rounded-2xl p-5 text-left">
+       <div class="flex items-center gap-4">
+        <div class="w-14 h-14 gradient-blue rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+         ⚡
+        </div>
+        <div class="flex-1">
+         <p class="text-white font-semibold text-lg">Quick Practice</p>
+         <p class="text-purple-300 text-sm">10 random questions • 5 min</p>
+        </div><span class="text-white text-2xl">→</span>
+       </div></button> <button onclick="startPractice('grammar')" class="w-full hover-lift glass-strong rounded-2xl p-5 text-left">
+       <div class="flex items-center gap-4">
+        <div class="w-14 h-14 gradient-purple rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+         📝
+        </div>
+        <div class="flex-1">
+         <p class="text-white font-semibold text-lg">Grammar Drills</p>
+         <p class="text-purple-300 text-sm">Focus on grammar rules</p>
+        </div><span class="text-white text-2xl">→</span>
+       </div></button> <button onclick="startPractice('vocabulary')" class="w-full hover-lift glass-strong rounded-2xl p-5 text-left">
+       <div class="flex items-center gap-4">
+        <div class="w-14 h-14 gradient-pink rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+         💬
+        </div>
+        <div class="flex-1">
+         <p class="text-white font-semibold text-lg">Vocabulary Builder</p>
+         <p class="text-purple-300 text-sm">Expand your word bank</p>
+        </div><span class="text-white text-2xl">→</span>
+       </div></button> <button onclick="startPractice('listening')" class="w-full hover-lift glass-strong rounded-2xl p-5 text-left">
+       <div class="flex items-center gap-4">
+        <div class="w-14 h-14 gradient-orange rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+         🎧
+        </div>
+        <div class="flex-1">
+         <p class="text-white font-semibold text-lg">Listening Practice</p>
+         <p class="text-purple-300 text-sm">Train your ears</p>
+        </div><span class="text-white text-2xl">→</span>
+       </div></button> <button onclick="startPractice('speaking')" class="w-full hover-lift glass-strong rounded-2xl p-5 text-left">
+       <div class="flex items-center gap-4">
+        <div class="w-14 h-14 gradient-green rounded-xl flex items-center justify-center text-2xl flex-shrink-0">
+         🗣️
+        </div>
+        <div class="flex-1">
+         <p class="text-white font-semibold text-lg">Speaking Challenge</p>
+         <p class="text-purple-300 text-sm">Practice pronunciation</p>
+        </div><span class="text-white text-2xl">→</span>
+       </div></button>
+     </div>
+    </div><!-- GAMES SCREEN -->
+    <div id="games-screen" class="min-h-full p-4 md:p-6 hidden">
+     <div class="mb-6">
+      <div class="flex items-center justify-between">
+       <div>
+        <h1 class="text-white font-display text-2xl md:text-3xl font-bold mb-2">English Quest 🎮</h1>
+        <p class="text-purple-300 text-sm">Learn through games &amp; challenges</p>
+       </div><img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbpY26BWBVxaHrdPqP7cZSKu-HYqyEAzSPhbyyxmEPo8UayVcvcUXjI5mTo9PIdFuDLHt0Ro5-nzOklC50Qw8HN6Eq3cZAxqWq7nGUWYZFgLy8dJ0Wz_cMM9DQ8nfgzOWLnLGWYWAnfXW1q-oRVMJO3A9JY2vOerOqxnq3EZwcRrHsn5Cs9Nc1W752aas/s320/Logo%20DAKAHU%20SmartEnglish%20(2).png" alt="Logo" class="h-12 w-auto object-contain" onerror="this.style.display='none';">
+      </div>
+     </div><!-- Game Stats -->
+     <div class="glass-strong rounded-2xl p-4 mb-6">
+      <div class="grid grid-cols-3 gap-3">
+       <div class="text-center">
+        <p class="text-purple-300 text-xs mb-1">Games Played</p>
+        <p class="text-white font-bold text-xl" id="games-played-display">0</p>
+       </div>
+       <div class="text-center">
+        <p class="text-purple-300 text-xs mb-1">Best Streak</p>
+        <p class="text-white font-bold text-xl">🔥 <span id="best-streak-display">0</span></p>
+       </div>
+       <div class="text-center">
+        <p class="text-purple-300 text-xs mb-1">Game Score</p>
+        <p class="text-white font-bold text-xl">⭐ <span id="game-score-display">0</span></p>
+       </div>
+      </div>
+     </div><!-- Featured Game -->
+     <div class="glass-strong rounded-2xl p-6 mb-6 animate-pulse-glow border-2 border-purple-500/50">
+      <div class="flex items-center gap-2 mb-3"><span class="badge bg-gradient-to-r from-amber-400 to-orange-500 text-white">🔥 FEATURED</span> <span class="badge bg-purple-500/30 text-purple-200">NEW</span>
+      </div>
+      <h3 class="text-white font-bold text-xl mb-2">Lucky Spinner 🎯</h3>
+      <p class="text-purple-300 text-sm mb-4">Spin the wheel to select random players for challenges!</p><button onclick="startGameMode('spinner')" class="w-full bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold py-3 rounded-xl hover:from-amber-300 hover:to-orange-400 transition-all"> Play Now → </button>
+     </div><!-- Game Modes Grid -->
+     <div class="grid grid-cols-2 gap-3"><button onclick="startGameMode('vocabulary')" class="hover-lift glass-strong rounded-2xl p-4 text-left game-card">
+       <div class="text-3xl mb-2">
+        📚
+       </div><p class="text-white font-semibold">Vocabulary Quest</p><p class="text-purple-300 text-xs">Match meanings</p><span class="badge bg-emerald-500/20 text-emerald-300 mt-2">+10 XP</span> </button> <button onclick="startGameMode('spelling')" class="hover-lift glass-strong rounded-2xl p-4 text-left game-card">
+       <div class="text-3xl mb-2">
+        ✏️
+       </div><p class="text-white font-semibold">Spelling Bee</p><p class="text-purple-300 text-xs">Type correctly</p><span class="badge bg-violet-500/20 text-violet-300 mt-2">+15 XP</span> </button> <button onclick="startGameMode('grammar')" class="hover-lift glass-strong rounded-2xl p-4 text-left game-card">
+       <div class="text-3xl mb-2">
+        📝
+       </div><p class="text-white font-semibold">Grammar Master</p><p class="text-purple-300 text-xs">Fill blanks</p><span class="badge bg-rose-500/20 text-rose-300 mt-2">+12 XP</span> </button> <button onclick="startGameMode('idiom')" class="hover-lift glass-strong rounded-2xl p-4 text-left game-card">
+       <div class="text-3xl mb-2">
+        💡
+       </div><p class="text-white font-semibold">Idiom Challenge</p><p class="text-purple-300 text-xs">Learn phrases</p><span class="badge bg-amber-500/20 text-amber-300 mt-2">+20 XP</span> </button> <button onclick="startGameMode('battle')" class="hover-lift glass-strong rounded-2xl p-4 text-left border-2 border-red-500/30 game-card">
+       <div class="text-3xl mb-2">
+        ⚔️
+       </div><p class="text-white font-semibold">Class Battle</p><p class="text-purple-300 text-xs">Team vs Team</p><span class="badge bg-red-500/20 text-red-300 mt-2">Multiplayer</span> </button> <button onclick="startGameMode('fastclick')" class="hover-lift glass-strong rounded-2xl p-4 text-left game-card">
+       <div class="text-3xl mb-2">
+        ⚡
+       </div><p class="text-white font-semibold">Fast Click</p><p class="text-purple-300 text-xs">Speed quiz</p><span class="badge bg-cyan-500/20 text-cyan-300 mt-2">Party Mode</span> </button>
+     </div>
+    </div><!-- PROFILE SCREEN -->
+    <div id="profile-screen" class="min-h-full p-4 md:p-6 hidden">
+     <div class="mb-6">
+      <h1 class="text-white font-display text-2xl md:text-3xl font-bold mb-2">Profile 👤</h1>
+      <p class="text-purple-300 text-sm">Manage your account</p>
+     </div><!-- Profile Card -->
+     <div class="glass-strong rounded-2xl p-6 mb-6">
+      <div class="flex items-center gap-4 mb-6">
+       <div id="profile-avatar" class="w-20 h-20 rounded-full bg-gradient-to-br from-purple-400 to-pink-600 flex items-center justify-center text-4xl cursor-pointer hover:scale-110 transition-transform" onclick="openPhotoSelector()">
+        🎓
+       </div>
+       <div class="flex-1">
+        <p class="text-white font-bold text-xl" id="profile-name">Guest User</p>
+        <p class="text-purple-300 text-sm" id="profile-email">guest@dakahu.com</p>
+        <div class="level-badge mt-2 inline-block">
+         LV <span id="profile-level">1</span> • Beginner
+        </div>
+       </div>
+      </div><button onclick="editProfile()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold"> ✏️ Edit Profile </button>
+     </div><!-- Stats Overview -->
+     <div class="glass-strong rounded-2xl p-6 mb-6">
+      <h3 class="text-white font-semibold mb-4">Statistics Overview</h3>
+      <div class="space-y-4">
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 gradient-blue rounded-lg flex items-center justify-center">
+          📚
+         </div>
+         <div>
+          <p class="text-white text-sm font-semibold">Lessons Completed</p>
+          <p class="text-purple-300 text-xs">Keep learning daily</p>
+         </div>
+        </div>
+        <p class="text-white font-bold text-xl" id="profile-lessons">0</p>
+       </div>
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 gradient-purple rounded-lg flex items-center justify-center">
+          🎮
+         </div>
+         <div>
+          <p class="text-white text-sm font-semibold">Games Played</p>
+          <p class="text-purple-300 text-xs">Challenge yourself</p>
+         </div>
+        </div>
+        <p class="text-white font-bold text-xl" id="profile-games">0</p>
+       </div>
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 gradient-orange rounded-lg flex items-center justify-center">
+          🔥
+         </div>
+         <div>
+          <p class="text-white text-sm font-semibold">Daily Streak</p>
+          <p class="text-purple-300 text-xs">Current streak</p>
+         </div>
+        </div>
+        <p class="text-white font-bold text-xl" id="profile-streak">0</p>
+       </div>
+       <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 gradient-pink rounded-lg flex items-center justify-center">
+          ⭐
+         </div>
+         <div>
+          <p class="text-white text-sm font-semibold">Total XP</p>
+          <p class="text-purple-300 text-xs">All time score</p>
+         </div>
+        </div>
+        <p class="text-white font-bold text-xl" id="profile-xp">0</p>
+       </div>
+      </div>
+     </div><!-- Achievements -->
+     <div class="glass-strong rounded-2xl p-6 mb-6">
+      <div class="flex items-center justify-between mb-4">
+       <h3 class="text-white font-semibold">Achievements</h3><button onclick="viewAllBadges()" class="text-purple-300 text-sm hover:text-purple-200">View All</button>
+      </div>
+      <div id="profile-badges" class="grid grid-cols-4 gap-3"></div>
+     </div><!-- Settings -->
+     <div class="space-y-3"><button onclick="showSettings()" class="w-full glass-strong hover-lift rounded-xl p-4 flex items-center justify-between">
+       <div class="flex items-center gap-3"><span class="text-2xl">⚙️</span> <span class="text-white font-semibold">Settings</span>
+       </div><span class="text-purple-300">→</span> </button> <button onclick="showDevelopmentTeam()" class="w-full glass-strong hover-lift rounded-xl p-4 flex items-center justify-between">
+       <div class="flex items-center gap-3"><span class="text-2xl">👥</span> <span class="text-white font-semibold">Tim Pengembang</span>
+       </div><span class="text-purple-300">→</span> </button> <button onclick="showAbout()" class="w-full glass-strong hover-lift rounded-xl p-4 flex items-center justify-between">
+       <div class="flex items-center gap-3"><span class="text-2xl">ℹ️</span> <span class="text-white font-semibold">About DAKAHU</span>
+       </div><span class="text-purple-300">→</span> </button> <button onclick="showHelp()" class="w-full glass-strong hover-lift rounded-xl p-4 flex items-center justify-between">
+       <div class="flex items-center gap-3"><span class="text-2xl">❓</span> <span class="text-white font-semibold">Help &amp; Support</span>
+       </div><span class="text-purple-300">→</span> </button>
+     </div>
+    </div>
+   </div><!-- Bottom Navigation -->
+   <nav class="fixed bottom-0 left-0 right-0 glass-strong border-t border-white/10 px-4 py-3 z-50">
+    <div class="max-w-lg mx-auto flex items-center justify-around"><button onclick="navigateTo('home')" class="nav-item active flex flex-col items-center gap-1 px-4 py-2 rounded-xl transition-all" data-screen="home"> <span class="text-2xl">🏠</span> <span class="text-xs font-semibold">Home</span> </button> <button onclick="navigateTo('learn')" class="nav-item flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-purple-300 transition-all" data-screen="learn"> <span class="text-2xl">📖</span> <span class="text-xs font-semibold">Learn</span> </button> <button onclick="navigateTo('practice')" class="nav-item flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-purple-300 transition-all" data-screen="practice"> <span class="text-2xl">✍️</span> <span class="text-xs font-semibold">Practice</span> </button> <button onclick="navigateTo('games')" class="nav-item flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-purple-300 transition-all" data-screen="games"> <span class="text-2xl">🎮</span> <span class="text-xs font-semibold">Games</span> </button> <button onclick="navigateTo('profile')" class="nav-item flex flex-col items-center gap-1 px-4 py-2 rounded-xl text-purple-300 transition-all" data-screen="profile"> <span class="text-2xl">👤</span> <span class="text-xs font-semibold">Profile</span> </button>
+    </div>
+   </nav>
+  </div>
+  <script>
+    // ==========================================
+    // AUDIO SYSTEM
+    // ==========================================
+    
+    const AudioSystem = {
+      bgMusic: null,
+      sounds: {},
+      musicEnabled: true,
+      sfxEnabled: true,
+      
+      init() {
+        // Load settings from localStorage
+        this.musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
+        this.sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
+        
+        // Create background music
+        this.bgMusic = new Audio();
+        this.bgMusic.src = 'https://cdn.pixabay.com/audio/2022/05/27/audio_1808fbf07a.mp3'; // Happy upbeat background
+        this.bgMusic.loop = true;
+        this.bgMusic.volume = 0.3;
+        
+        // Create sound effects using Web Audio API
+        this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        
+        // Update UI
+        this.updateUI();
+        
+        // Auto-start music on first user interaction
+        document.addEventListener('click', () => this.startMusic(), { once: true });
+      },
+      
+      updateUI() {
+        const musicBtn = document.getElementById('music-toggle');
+        const sfxBtn = document.getElementById('sfx-toggle');
+        
+        if (musicBtn) {
+          musicBtn.textContent = this.musicEnabled ? '🎵' : '🔇';
+          musicBtn.style.opacity = this.musicEnabled ? '1' : '0.5';
+        }
+        
+        if (sfxBtn) {
+          sfxBtn.textContent = this.sfxEnabled ? '🔊' : '🔇';
+          sfxBtn.style.opacity = this.sfxEnabled ? '1' : '0.5';
+        }
+      },
+      
+      startMusic() {
+        if (this.musicEnabled && this.bgMusic.paused) {
+          this.bgMusic.play().catch(() => {});
+        }
+      },
+      
+      toggleMusic() {
+        this.musicEnabled = !this.musicEnabled;
+        localStorage.setItem('musicEnabled', this.musicEnabled);
+        
+        if (this.musicEnabled) {
+          this.bgMusic.play().catch(() => {});
+        } else {
+          this.bgMusic.pause();
+        }
+        
+        this.updateUI();
+      },
+      
+      toggleSFX() {
+        this.sfxEnabled = !this.sfxEnabled;
+        localStorage.setItem('sfxEnabled', this.sfxEnabled);
+        this.updateUI();
+      },
+      
+      // Play different sounds
+      playClick() {
+        if (!this.sfxEnabled) return;
+        this.playTone(800, 0.1, 0.05);
+      },
+      
+      playSuccess() {
+        if (!this.sfxEnabled) return;
+        this.playTone(1000, 0.2, 0.1);
+        setTimeout(() => this.playTone(1200, 0.2, 0.1), 100);
+      },
+      
+      playError() {
+        if (!this.sfxEnabled) return;
+        this.playTone(300, 0.3, 0.15);
+      },
+      
+      playWin() {
+        if (!this.sfxEnabled) return;
+        const notes = [523, 659, 784, 1047];
+        notes.forEach((note, i) => {
+          setTimeout(() => this.playTone(note, 0.3, 0.2), i * 150);
+        });
+      },
+      
+      playSpin() {
+        if (!this.sfxEnabled) return;
+        this.playTone(600, 0.1, 0.05);
+      },
+      
+      playLevelUp() {
+        if (!this.sfxEnabled) return;
+        const notes = [523, 659, 784, 1047, 1319];
+        notes.forEach((note, i) => {
+          setTimeout(() => this.playTone(note, 0.2, 0.15), i * 100);
+        });
+      },
+      
+      playTone(frequency, duration, volume = 0.3) {
+        if (!this.audioContext) return;
+        
+        const oscillator = this.audioContext.createOscillator();
+        const gainNode = this.audioContext.createGain();
+        
+        oscillator.connect(gainNode);
+        gainNode.connect(this.audioContext.destination);
+        
+        oscillator.frequency.value = frequency;
+        oscillator.type = 'sine';
+        
+        gainNode.gain.setValueAtTime(volume, this.audioContext.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + duration);
+        
+        oscillator.start(this.audioContext.currentTime);
+        oscillator.stop(this.audioContext.currentTime + duration);
+      }
+    };
+    
+    function toggleMusic() {
+      AudioSystem.toggleMusic();
+      AudioSystem.playClick();
+    }
+    
+    function toggleSFX() {
+      AudioSystem.toggleSFX();
+      AudioSystem.playClick();
+    }
+    
+    // ==========================================
+    // SDK CONFIGURATION & INITIALIZATION
+    // ==========================================
+    
+    const defaultConfig = {
+      app_title: "DAKAHU SmartEnglish",
+      welcome_message: "Welcome back! Ready to level up?",
+      primary_color: "#a78bfa",
+      font_family: "Poppins",
+      font_size: 16
+    };
+    
+    let userData = [];
+    let currentUser = null;
+    let isInitialized = false;
+    let currentGameMode = null;
+    
+    // Data SDK Handler
+    const dataHandler = {
+      onDataChanged(data) {
+        userData = data || [];
+        if (userData.length > 0 && !currentUser) {
+          currentUser = userData[0];
+        }
+        updateAllDisplays();
+      }
+    };
+    
+    // Element SDK Configuration
+    async function onConfigChange(config) {
+      const welcomeMsg = config.welcome_message || defaultConfig.welcome_message;
+      const welcomeEl = document.getElementById('welcome-msg');
+      if (welcomeEl) {
+        welcomeEl.textContent = welcomeMsg;
+      }
+      
+      if (config.font_family && config.font_family !== defaultConfig.font_family) {
+        document.body.style.fontFamily = `${config.font_family}, ${defaultConfig.font_family}, sans-serif`;
+      }
+      
+      if (config.font_size && config.font_size !== defaultConfig.font_size) {
+        const scale = config.font_size / defaultConfig.font_size;
+        document.documentElement.style.fontSize = `${scale * 16}px`;
+      }
+    }
+    
+    function mapToCapabilities(config) {
+      return {
+        recolorables: [
+          {
+            get: () => config.primary_color || defaultConfig.primary_color,
+            set: (value) => {
+              if (window.elementSdk) {
+                window.elementSdk.setConfig({ primary_color: value });
+              }
+            }
+          }
+        ],
+        borderables: [],
+        fontEditable: {
+          get: () => config.font_family || defaultConfig.font_family,
+          set: (value) => {
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ font_family: value });
+            }
+          }
+        },
+        fontSizeable: {
+          get: () => config.font_size || defaultConfig.font_size,
+          set: (value) => {
+            if (window.elementSdk) {
+              window.elementSdk.setConfig({ font_size: value });
+            }
+          }
+        }
+      };
+    }
+    
+    function mapToEditPanelValues(config) {
+      return new Map([
+        ["app_title", config.app_title || defaultConfig.app_title],
+        ["welcome_message", config.welcome_message || defaultConfig.welcome_message]
+      ]);
+    }
+    
+    // ==========================================
+    // INITIALIZATION
+    // ==========================================
+    
+    async function initApp() {
+      try {
+        // Initialize Audio System
+        AudioSystem.init();
+        
+        if (window.elementSdk) {
+          await window.elementSdk.init({
+            defaultConfig,
+            onConfigChange,
+            mapToCapabilities,
+            mapToEditPanelValues
+          });
+        }
+        
+        if (window.dataSdk) {
+          const initResult = await window.dataSdk.init(dataHandler);
+          if (!initResult.isOk) {
+            console.error("Failed to initialize Data SDK");
+          }
+        }
+        
+        isInitialized = true;
+        setupApp();
+      } catch (error) {
+        console.error("Initialization error:", error);
+        setupApp();
+      }
+    }
+    
+    function setupApp() {
+      updateAllDisplays();
+    }
+    
+    function updateAllDisplays() {
+      if (!currentUser) {
+        showOnboarding();
+        return;
+      }
+      
+      // Update profile photo everywhere
+      updateProfilePhoto();
+      
+      document.getElementById('display-player-name').textContent = currentUser.player_name || 'Learner';
+      document.getElementById('user-name-display').textContent = currentUser.player_name || 'Guest User';
+      document.getElementById('display-level').textContent = currentUser.current_level || 'Beginner';
+      document.getElementById('display-level-num').textContent = getLevelNumber(currentUser.total_score || 0);
+      
+      const totalScore = currentUser.total_score || 0;
+      const nextLevelXP = 100;
+      const currentXP = totalScore % 100;
+      
+      document.getElementById('current-xp').textContent = currentXP;
+      document.getElementById('next-level-xp').textContent = nextLevelXP;
+      document.getElementById('xp-progress-bar').style.width = `${(currentXP / nextLevelXP) * 100}%`;
+      
+      document.getElementById('daily-streak').textContent = currentUser.daily_streak || 0;
+      document.getElementById('lessons-done').textContent = currentUser.lessons_completed || 0;
+      document.getElementById('total-score').textContent = totalScore;
+      
+      document.getElementById('games-played-display').textContent = currentUser.games_played || 0;
+      document.getElementById('best-streak-display').textContent = currentUser.best_streak || 0;
+      document.getElementById('game-score-display').textContent = totalScore;
+      
+      document.getElementById('profile-name').textContent = currentUser.player_name || 'Guest User';
+      document.getElementById('profile-level').textContent = getLevelNumber(totalScore);
+      document.getElementById('profile-lessons').textContent = currentUser.lessons_completed || 0;
+      document.getElementById('profile-games').textContent = currentUser.games_played || 0;
+      document.getElementById('profile-streak').textContent = currentUser.daily_streak || 0;
+      document.getElementById('profile-xp').textContent = totalScore;
+      
+      document.getElementById('practice-score-display').textContent = currentUser.practice_score || 0;
+      const accuracy = currentUser.games_played > 0 ? Math.round(((currentUser.total_score || 0) / (currentUser.games_played * 100)) * 100) : 0;
+      document.getElementById('accuracy-display').textContent = Math.min(accuracy, 100);
+      
+      updateBadges();
+    }
+    
+    function updateProfilePhoto() {
+      const homeAvatar = document.getElementById('home-avatar');
+      const profileAvatar = document.getElementById('profile-avatar');
+      
+      const photo = currentUser?.profile_photo || '🎓';
+      
+      if (homeAvatar) {
+        if (photo.startsWith('http') || photo.startsWith('data:')) {
+          homeAvatar.innerHTML = `<img src="${photo}" class="w-full h-full rounded-full object-cover" onerror="this.parentElement.textContent='🎓'">`;
+        } else {
+          homeAvatar.textContent = photo;
+        }
+      }
+      
+      if (profileAvatar) {
+        if (photo.startsWith('http') || photo.startsWith('data:')) {
+          profileAvatar.innerHTML = `<img src="${photo}" class="w-full h-full rounded-full object-cover" onerror="this.parentElement.textContent='🎓'">`;
+        } else {
+          profileAvatar.textContent = photo;
+        }
+      }
+    }
+    
+    function getLevelNumber(score) {
+      return Math.floor(score / 100) + 1;
+    }
+    
+    function updateBadges() {
+      const badges = [
+        { icon: '🎯', name: 'First Steps', unlocked: (currentUser?.lessons_completed || 0) >= 1 },
+        { icon: '🔥', name: 'On Fire', unlocked: (currentUser?.daily_streak || 0) >= 3 },
+        { icon: '⭐', name: 'Rising Star', unlocked: (currentUser?.total_score || 0) >= 100 },
+        { icon: '🏆', name: 'Champion', unlocked: (currentUser?.games_played || 0) >= 10 },
+        { icon: '💎', name: 'Master', unlocked: (currentUser?.total_score || 0) >= 500 },
+        { icon: '👑', name: 'Legend', unlocked: (currentUser?.total_score || 0) >= 1000 },
+        { icon: '🚀', name: 'Speedster', unlocked: (currentUser?.best_streak || 0) >= 5 },
+        { icon: '📚', name: 'Bookworm', unlocked: (currentUser?.lessons_completed || 0) >= 10 }
+      ];
+      
+      const badgeHTML = badges.map(badge => `
+        <div class="stat-card aspect-square flex flex-col items-center justify-center ${badge.unlocked ? '' : 'opacity-30 grayscale'}">
+          <div class="text-2xl mb-1">${badge.icon}</div>
+          <p class="text-white text-xs text-center">${badge.name}</p>
+        </div>
+      `).join('');
+      
+      document.getElementById('badges-grid').innerHTML = badgeHTML;
+      document.getElementById('profile-badges').innerHTML = badgeHTML;
+    }
+    
+    // ==========================================
+    // PHOTO SELECTOR
+    // ==========================================
+    
+    function openPhotoSelector() {
+      AudioSystem.playClick();
+      
+      const emojis = ['🎓', '👨‍🎓', '👩‍🎓', '🧑‍🎓', '😊', '😎', '🤓', '🥳', '🌟', '⭐', '🎯', '🚀', '💪', '🔥', '✨'];
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-md w-full animate-scale-in border-2 border-purple-500/30">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-display text-2xl font-bold">Pilih Foto Profil</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="mb-6">
+            <label class="block text-purple-200 text-sm mb-2">Upload Foto</label>
+            <input type="file" id="photo-upload" accept="image/*" class="w-full glass border border-purple-500/30 rounded-xl px-4 py-3 text-white text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white file:cursor-pointer hover:file:bg-purple-400">
+          </div>
+          
+          <div class="mb-6">
+            <p class="text-purple-200 text-sm mb-3">Atau pilih emoji:</p>
+            <div class="grid grid-cols-5 gap-2">
+              ${emojis.map(emoji => `
+                <button onclick="selectEmoji('${emoji}')" class="glass-strong hover-lift rounded-xl p-3 text-3xl transition-all hover:bg-purple-500/30">
+                  ${emoji}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold">
+            Batal
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      
+      document.getElementById('photo-upload').addEventListener('change', async (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = async (event) => {
+            await updateUserPhoto(event.target.result);
+            modal.remove();
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+    }
+    
+    async function selectEmoji(emoji) {
+      AudioSystem.playClick();
+      await updateUserPhoto(emoji);
+      document.querySelector('.fixed.inset-0').remove();
+    }
+    
+    async function updateUserPhoto(photo) {
+      if (!currentUser || !window.dataSdk) return;
+      
+      const updatedUser = {
+        ...currentUser,
+        profile_photo: photo,
+        last_active: new Date().toISOString()
+      };
+      
+      const result = await window.dataSdk.update(updatedUser);
+      if (result.isOk) {
+        currentUser = updatedUser;
+        updateProfilePhoto();
+        showToast("✅ Foto profil berhasil diupdate!");
+        AudioSystem.playSuccess();
+      } else {
+        showToast("Gagal menyimpan foto.");
+        AudioSystem.playError();
+      }
+    }
+    
+    // ==========================================
+    // ONBOARDING
+    // ==========================================
+    
+    function showOnboarding() {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-8 max-w-md w-full text-center animate-scale-in border-2 border-purple-500/30">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbpY26BWBVxaHrdPqP7cZSKu-HYqyEAzSPhbyyxmEPo8UayVcvcUXjI5mTo9PIdFuDLHt0Ro5-nzOklC50Qw8HN6Eq3cZAxqWq7nGUWYZFgLy8dJ0Wz_cMM9DQ8nfgzOWLnLGWYWAnfXW1q-oRVMJO3A9JY2vOerOqxnq3EZwcRrHsn5Cs9Nc1W752aas/s320/Logo%20DAKAHU%20SmartEnglish%20(2).png" 
+               alt="Logo" 
+               class="h-20 mx-auto mb-4"
+               onerror="this.style.display='none';">
+          <h2 class="text-white font-display text-3xl font-bold mb-2">Selamat Datang! 🎉</h2>
+          <p class="text-purple-300 mb-6">Mulai perjalanan belajar Bahasa Inggris dengan DAKAHU SmartEnglish</p>
+          
+          <div class="mb-6">
+            <label for="onboarding-name" class="text-purple-200 text-sm mb-2 block text-left">Siapa nama kamu?</label>
+            <input type="text" id="onboarding-name" placeholder="Masukkan nama..." 
+              class="w-full glass border border-purple-500/30 rounded-xl px-4 py-3 text-white placeholder-purple-400 focus:outline-none focus:border-purple-400">
+          </div>
+          
+          <button onclick="completeOnboarding()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-6 py-4 rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all">
+            Mulai Belajar →
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      document.getElementById('onboarding-name').focus();
+      
+      document.getElementById('onboarding-name').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') completeOnboarding();
+      });
+    }
+    
+    async function completeOnboarding() {
+      AudioSystem.playClick();
+      
+      const nameInput = document.getElementById('onboarding-name');
+      const name = nameInput.value.trim();
+      
+      if (!name) {
+        showToast("Silakan masukkan nama kamu! 📝");
+        AudioSystem.playError();
+        return;
+      }
+      
+      if (userData.length >= 999) {
+        showToast("Maksimum pengguna tercapai!");
+        AudioSystem.playError();
+        return;
+      }
+      
+      const newUser = {
+        id: Date.now().toString(),
+        player_name: name,
+        profile_photo: '🎓',
+        total_score: 0,
+        games_played: 0,
+        best_streak: 0,
+        lessons_completed: 0,
+        practice_score: 0,
+        current_level: "Beginner",
+        badges_earned: "",
+        daily_streak: 0,
+        last_active: new Date().toISOString(),
+        created_at: new Date().toISOString()
+      };
+      
+      if (window.dataSdk) {
+        const result = await window.dataSdk.create(newUser);
+        if (result.isOk) {
+          currentUser = newUser;
+          document.querySelector('.fixed.inset-0').remove();
+          updateAllDisplays();
+          showToast(`Selamat datang ${name}! Mari mulai belajar! 🎉`);
+          AudioSystem.playWin();
+        } else {
+          showToast("Gagal membuat profil. Silakan coba lagi.");
+          AudioSystem.playError();
+        }
+      } else {
+        currentUser = newUser;
+        userData.push(newUser);
+        document.querySelector('.fixed.inset-0').remove();
+        updateAllDisplays();
+        showToast(`Selamat datang ${name}! Mari mulai belajar! 🎉`);
+        AudioSystem.playWin();
+      }
+    }
+    
+    // ==========================================
+    // NAVIGATION
+    // ==========================================
+    
+    function navigateTo(screen) {
+      AudioSystem.playClick();
+      
+      document.getElementById('home-screen').classList.add('hidden');
+      document.getElementById('learn-screen').classList.add('hidden');
+      document.getElementById('practice-screen').classList.add('hidden');
+      document.getElementById('games-screen').classList.add('hidden');
+      document.getElementById('profile-screen').classList.add('hidden');
+      
+      document.getElementById(`${screen}-screen`).classList.remove('hidden');
+      
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        item.classList.add('text-purple-300');
+      });
+      
+      const activeItem = document.querySelector(`.nav-item[data-screen="${screen}"]`);
+      if (activeItem) {
+        activeItem.classList.add('active');
+        activeItem.classList.remove('text-purple-300');
+      }
+      
+      document.getElementById('content-area').scrollTop = 0;
+    }
+    
+    // ==========================================
+    // ARRAY SHUFFLING UTILITY
+    // ==========================================
+    
+    function shuffleArray(array) {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+    
+    // ==========================================
+    // LEARNING FUNCTIONS
+    // ==========================================
+    
+    function openLesson(lessonId) {
+      AudioSystem.playClick();
+      showToast(`Membuka pelajaran ${lessonId}... 📚`);
+      setTimeout(() => {
+        showLessonDetail(lessonId);
+      }, 500);
+    }
+    
+    function showLessonDetail(lessonId) {
+      const lessons = {
+        'present-perfect': {
+          title: 'Present Perfect Tense',
+          content: 'Present Perfect Tense digunakan untuk menyatakan kejadian yang dimulai di masa lalu dan masih berlanjut hingga sekarang, atau kejadian yang baru saja selesai.',
+          example: 'I have studied English for 5 years.',
+          xp: 20
+        },
+        'phrasal-verbs': {
+          title: 'Common Phrasal Verbs',
+          content: 'Phrasal verbs adalah kombinasi kata kerja dengan preposisi atau adverb yang menghasilkan makna baru.',
+          example: 'Look up = mencari (dalam kamus), Give up = menyerah',
+          xp: 15
+        },
+        'business-english': {
+          title: 'Business English',
+          content: 'Bahasa Inggris bisnis mencakup kosakata dan frasa formal yang digunakan dalam konteks profesional.',
+          example: 'Could you please send me the report? / I would like to schedule a meeting.',
+          xp: 25
+        }
+      };
+      
+      const lesson = lessons[lessonId] || lessons['present-perfect'];
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-white font-display text-2xl font-bold">${lesson.title}</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300 transition-colors">×</button>
+          </div>
+          
+          <div class="glass rounded-2xl p-6 mb-4">
+            <h3 class="text-purple-300 font-semibold mb-2">Penjelasan:</h3>
+            <p class="text-white mb-4">${lesson.content}</p>
+            
+            <h3 class="text-purple-300 font-semibold mb-2">Contoh:</h3>
+            <div class="glass-strong rounded-xl p-4">
+              <p class="text-white font-mono">${lesson.example}</p>
+            </div>
+          </div>
+          
+          <div class="flex gap-3">
+            <button onclick="completeLesson('${lessonId}', ${lesson.xp})" class="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 text-white font-bold py-3 rounded-xl hover:from-green-400 hover:to-emerald-400 transition-all">
+              ✓ Selesai (+${lesson.xp} XP)
+            </button>
+            <button onclick="this.closest('.fixed').remove()" class="flex-1 glass hover-lift py-3 rounded-xl text-white font-semibold">
+              Nanti
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    async function completeLesson(lessonId, xp) {
+      AudioSystem.playClick();
+      
+      if (!currentUser || !window.dataSdk) {
+        showToast("Tidak dapat menyimpan progress!");
+        AudioSystem.playError();
+        return;
+      }
+      
+      const updatedUser = {
+        ...currentUser,
+        lessons_completed: (currentUser.lessons_completed || 0) + 1,
+        total_score: (currentUser.total_score || 0) + xp,
+        daily_streak: (currentUser.daily_streak || 0) + 1,
+        last_active: new Date().toISOString()
+      };
+      
+      const result = await window.dataSdk.update(updatedUser);
+      if (result.isOk) {
+        currentUser = updatedUser;
+        document.querySelector('.fixed.inset-0').remove();
+        showToast(`🎉 Pelajaran selesai! +${xp} XP`);
+        AudioSystem.playSuccess();
+        updateAllDisplays();
+      } else {
+        showToast("Gagal menyimpan progress.");
+        AudioSystem.playError();
+      }
+    }
+    
+    function openLearningModule(moduleId) {
+      AudioSystem.playClick();
+      showToast(`Membuka modul ${moduleId}... 📖`);
+      setTimeout(() => {
+        showLessonDetail('present-perfect');
+      }, 500);
+    }
+    
+    function openCategory(category) {
+      AudioSystem.playClick();
+      
+      const categoryData = {
+        grammar: { title: 'Grammar', lessons: ['Tenses', 'Modals', 'Conditionals', 'Passive Voice'] },
+        vocabulary: { title: 'Vocabulary', lessons: ['Daily Words', 'Business Terms', 'Idioms', 'Phrasal Verbs'] },
+        pronunciation: { title: 'Pronunciation', lessons: ['Vowels', 'Consonants', 'Stress', 'Intonation'] },
+        conversation: { title: 'Conversation', lessons: ['Greetings', 'Small Talk', 'Formal', 'Informal'] }
+      };
+      
+      const data = categoryData[category];
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-md w-full animate-scale-in border-2 border-purple-500/30 my-4">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="text-white font-display text-2xl font-bold">${data.title}</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="space-y-3">
+            ${data.lessons.map((lesson, index) => `
+              <button onclick="showLessonDetail('${category}-${index}')" class="w-full glass-strong hover-lift rounded-xl p-4 text-left">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 gradient-purple rounded-lg flex items-center justify-center text-white font-bold">${index + 1}</div>
+                  <div class="flex-1">
+                    <p class="text-white font-semibold">${lesson}</p>
+                    <p class="text-purple-300 text-xs">15-20 min</p>
+                  </div>
+                  <span class="text-purple-300">→</span>
+                </div>
+              </button>
+            `).join('')}
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-4">
+            Tutup
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    // ==========================================
+    // PRACTICE FUNCTIONS (WITH SHUFFLED QUESTIONS)
+    // ==========================================
+    
+    function startPractice(type) {
+      AudioSystem.playClick();
+      
+      if (!currentUser) {
+        showToast("Silakan lengkapi onboarding terlebih dahulu! 👤");
+        AudioSystem.playError();
+        showOnboarding();
+        return;
+      }
+      
+      showToast(`Memulai ${type} practice... 🎯`);
+      setTimeout(() => {
+        showPracticeQuiz(type);
+      }, 500);
+    }
+    
+    function showPracticeQuiz(type) {
+      const quizData = {
+        quick: [
+          { q: "She ___ to school every day.", options: ["go", "goes", "going", "gone"], correct: 1 },
+          { q: "I have ___ this movie before.", options: ["see", "saw", "seen", "seeing"], correct: 2 },
+          { q: "They ___ playing football now.", options: ["is", "am", "are", "be"], correct: 2 },
+          { q: "He ___ his homework yesterday.", options: ["do", "does", "did", "done"], correct: 2 },
+          { q: "We ___ to the park tomorrow.", options: ["go", "went", "will go", "going"], correct: 2 }
+        ],
+        grammar: [
+          { q: "If I ___ rich, I would buy a car.", options: ["am", "was", "were", "be"], correct: 2 },
+          { q: "The letter ___ by John yesterday.", options: ["write", "wrote", "written", "was written"], correct: 3 },
+          { q: "She has ___ here since 2020.", options: ["live", "lived", "living", "lives"], correct: 1 },
+          { q: "I wish I ___ speak French.", options: ["can", "could", "will", "would"], correct: 1 },
+          { q: "The book ___ on the table.", options: ["is", "are", "am", "be"], correct: 0 }
+        ],
+        vocabulary: [
+          { q: "'Enormous' means:", options: ["very small", "very big", "very fast", "very slow"], correct: 1 },
+          { q: "'Abandon' means:", options: ["to leave", "to take", "to buy", "to sell"], correct: 0 },
+          { q: "'Ancient' means:", options: ["new", "old", "modern", "future"], correct: 1 },
+          { q: "'Brave' means:", options: ["scared", "courageous", "weak", "shy"], correct: 1 },
+          { q: "'Clever' means:", options: ["stupid", "smart", "lazy", "slow"], correct: 1 }
+        ],
+        listening: [
+          { q: "Listen: 'I am going to the store.' What tense?", options: ["Present Simple", "Present Continuous", "Future", "Past"], correct: 2 },
+          { q: "Listen: 'She has finished her work.' What tense?", options: ["Present Perfect", "Past Simple", "Present Simple", "Future"], correct: 0 },
+          { q: "Listen: 'They were playing.' What tense?", options: ["Past Continuous", "Present Continuous", "Past Simple", "Present Perfect"], correct: 0 }
+        ],
+        speaking: [
+          { q: "How do you pronounce 'through'?", options: ["throw", "though", "thought", "thru"], correct: 0 },
+          { q: "Stress in 'important':", options: ["IM-por-tant", "im-POR-tant", "im-por-TANT", "IM-POR-TANT"], correct: 1 },
+          { q: "Silent letter in 'knife':", options: ["k", "n", "i", "e"], correct: 0 }
+        ]
+      };
+      
+      // SHUFFLE QUESTIONS
+      const questions = shuffleArray(quizData[type] || quizData.quick);
+      
+      let currentQuestion = 0;
+      let score = 0;
+      
+      function renderQuestion() {
+        const q = questions[currentQuestion];
+        // SHUFFLE OPTIONS
+        const shuffledOptions = shuffleArray(q.options.map((opt, idx) => ({ text: opt, originalIndex: idx })));
+        
+        return `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h2 class="text-white font-display text-xl font-bold">Practice Quiz</h2>
+                <p class="text-purple-300 text-sm">Question ${currentQuestion + 1} of ${questions.length}</p>
+              </div>
+              <div class="text-white text-2xl font-bold">⭐ ${score}</div>
+            </div>
+            
+            <div class="glass rounded-2xl p-6 mb-4">
+              <p class="text-white text-lg font-semibold mb-4">${q.q}</p>
+              <div class="space-y-3" id="quiz-options">
+                ${shuffledOptions.map((opt, idx) => `
+                  <button onclick="checkAnswer(${opt.originalIndex}, ${q.correct})" class="w-full glass-strong hover-lift rounded-xl p-4 text-left text-white font-semibold transition-all hover:bg-purple-500/20">
+                    ${String.fromCharCode(65 + idx)}. ${opt.text}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+            
+            <div class="flex gap-3">
+              <button onclick="document.querySelector('.fixed.inset-0').remove()" class="flex-1 glass hover-lift py-3 rounded-xl text-white font-semibold">
+                Keluar
+              </button>
+            </div>
+          </div>
+        `;
+      }
+      
+      window.checkAnswer = async function(selected, correct) {
+        AudioSystem.playClick();
+        
+        const buttons = document.querySelectorAll('#quiz-options button');
+        buttons.forEach(btn => btn.disabled = true);
+        
+        if (selected === correct) {
+          score += 10;
+          showToast("✅ Benar! +10 poin");
+          AudioSystem.playSuccess();
+        } else {
+          showToast("❌ Salah!");
+          AudioSystem.playError();
+        }
+        
+        setTimeout(() => {
+          currentQuestion++;
+          if (currentQuestion < questions.length) {
+            modal.innerHTML = renderQuestion();
+          } else {
+            finishPractice(score);
+          }
+        }, 1500);
+      };
+      
+      async function finishPractice(finalScore) {
+        if (currentUser && window.dataSdk) {
+          const updatedUser = {
+            ...currentUser,
+            practice_score: (currentUser.practice_score || 0) + finalScore,
+            total_score: (currentUser.total_score || 0) + finalScore,
+            last_active: new Date().toISOString()
+          };
+          
+          await window.dataSdk.update(updatedUser);
+          currentUser = updatedUser;
+          updateAllDisplays();
+        }
+        
+        modal.innerHTML = `
+          <div class="glass-strong rounded-3xl p-8 max-w-md w-full text-center animate-scale-in border-2 border-purple-500/30">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-white font-display text-3xl font-bold mb-2">Practice Selesai!</h2>
+            <p class="text-purple-300 mb-4">Skor kamu: ${finalScore} poin</p>
+            <div class="glass rounded-xl p-4 mb-6">
+              <p class="text-white text-lg font-bold">${Math.round((finalScore / (questions.length * 10)) * 100)}% Akurasi</p>
+            </div>
+            <button onclick="this.closest('.fixed').remove()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-6 py-3 rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all">
+              Selesai
+            </button>
+          </div>
+        `;
+        AudioSystem.playWin();
+      }
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = renderQuestion();
+      document.body.appendChild(modal);
+    }
+    
+    // ==========================================
+    // GAME FUNCTIONS (WITH SHUFFLED CONTENT)
+    // ==========================================
+    
+    function startGameMode(mode) {
+      AudioSystem.playClick();
+      
+      if (!currentUser) {
+        showToast("Silakan lengkapi onboarding terlebih dahulu! 👤");
+        AudioSystem.playError();
+        showOnboarding();
+        return;
+      }
+      
+      currentGameMode = mode;
+      showToast(`Loading ${mode} game... 🎮`);
+      
+      setTimeout(() => {
+        switch(mode) {
+          case 'vocabulary':
+            startVocabularyQuest();
+            break;
+          case 'spelling':
+            startSpellingBee();
+            break;
+          case 'grammar':
+            startGrammarMaster();
+            break;
+          case 'idiom':
+            startIdiomChallenge();
+            break;
+          case 'battle':
+            startClassBattle();
+            break;
+          case 'fastclick':
+            startFastClick();
+            break;
+          case 'spinner':
+            startLuckySpinner();
+            break;
+          default:
+            startVocabularyQuest();
+        }
+      }, 500);
+    }
+    
+    // VOCABULARY QUEST (SHUFFLED)
+    function startVocabularyQuest() {
+      const allWords = [
+        { word: "Happy", meaning: "Bahagia", options: ["Sedih", "Bahagia", "Marah", "Takut"] },
+        { word: "Beautiful", meaning: "Cantik", options: ["Jelek", "Cantik", "Besar", "Kecil"] },
+        { word: "Fast", meaning: "Cepat", options: ["Lambat", "Tinggi", "Cepat", "Rendah"] },
+        { word: "Strong", meaning: "Kuat", options: ["Lemah", "Kuat", "Pintar", "Bodoh"] },
+        { word: "Difficult", meaning: "Sulit", options: ["Mudah", "Sulit", "Besar", "Kecil"] },
+        { word: "Brave", meaning: "Berani", options: ["Takut", "Berani", "Lemah", "Malas"] },
+        { word: "Clever", meaning: "Pintar", options: ["Bodoh", "Pintar", "Lambat", "Cepat"] }
+      ];
+      
+      // SHUFFLE WORDS
+      const words = shuffleArray(allWords).slice(0, 5);
+      
+      let currentQ = 0;
+      let score = 0;
+      
+      function renderGame() {
+        const w = words[currentQ];
+        // SHUFFLE OPTIONS
+        const shuffledOptions = shuffleArray([...w.options]);
+        
+        return `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-white font-display text-2xl font-bold">📚 Vocabulary Quest</h2>
+                <p class="text-purple-300 text-sm">Kata ${currentQ + 1} dari ${words.length}</p>
+              </div>
+              <div class="level-badge">�� ${score}</div>
+            </div>
+            
+            <div class="glass rounded-2xl p-8 mb-6 text-center">
+              <p class="text-purple-300 text-sm mb-2">Apa arti dari:</p>
+              <h3 class="text-white text-4xl font-bold mb-4">${w.word}</h3>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3" id="vocab-options">
+              ${shuffledOptions.map((opt, idx) => `
+                <button onclick="checkVocabAnswer('${opt}', '${w.meaning}')" class="glass-strong hover-lift rounded-2xl p-6 text-white font-bold text-lg transition-all hover:bg-purple-500/30">
+                  ${opt}
+                </button>
+              `).join('')}
+            </div>
+            
+            <button onclick="document.querySelector('.fixed.inset-0').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-4">
+              Keluar
+            </button>
+          </div>
+        `;
+      }
+      
+      window.checkVocabAnswer = function(selected, correct) {
+        AudioSystem.playClick();
+        
+        const buttons = document.querySelectorAll('#vocab-options button');
+        buttons.forEach(btn => btn.disabled = true);
+        
+        if (selected === correct) {
+          score += 10;
+          showToast("✅ Benar! +10 XP");
+          AudioSystem.playSuccess();
+        } else {
+          showToast(`❌ Salah! Jawaban: ${correct}`);
+          AudioSystem.playError();
+        }
+        
+        setTimeout(() => {
+          currentQ++;
+          if (currentQ < words.length) {
+            modal.innerHTML = renderGame();
+          } else {
+            finishGame('Vocabulary Quest', score);
+          }
+        }, 1500);
+      };
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = renderGame();
+      document.body.appendChild(modal);
+    }
+    
+    // SPELLING BEE (SHUFFLED)
+    function startSpellingBee() {
+      const allWords = [
+        { word: "Beautiful", hint: "Cantik" },
+        { word: "Difficult", hint: "Sulit" },
+        { word: "Restaurant", hint: "Restoran" },
+        { word: "Necessary", hint: "Perlu" },
+        { word: "Tomorrow", hint: "Besok" },
+        { word: "Important", hint: "Penting" },
+        { word: "Because", hint: "Karena" }
+      ];
+      
+      // SHUFFLE WORDS
+      const words = shuffleArray(allWords).slice(0, 5);
+      
+      let currentQ = 0;
+      let score = 0;
+      
+      function renderGame() {
+        const w = words[currentQ];
+        return `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-white font-display text-2xl font-bold">✏️ Spelling Bee</h2>
+                <p class="text-purple-300 text-sm">Kata ${currentQ + 1} dari ${words.length}</p>
+              </div>
+              <div class="level-badge">⭐ ${score}</div>
+            </div>
+            
+            <div class="glass rounded-2xl p-8 mb-6 text-center">
+              <p class="text-purple-300 text-sm mb-2">Tulis ejaan yang benar:</p>
+              <h3 class="text-white text-3xl font-bold mb-2">${w.hint}</h3>
+              <p class="text-purple-400 text-sm">Hint: ${w.word.length} huruf</p>
+            </div>
+            
+            <div class="mb-6">
+              <input type="text" id="spelling-input" placeholder="Ketik jawabanmu..." 
+                class="w-full glass border-2 border-purple-500/30 rounded-xl px-6 py-4 text-white text-center text-2xl font-bold placeholder-purple-400 focus:outline-none focus:border-purple-400">
+            </div>
+            
+            <div class="flex gap-3">
+              <button onclick="checkSpelling('${w.word}')" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-4 rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all">
+                Cek Jawaban
+              </button>
+              <button onclick="document.querySelector('.fixed.inset-0').remove()" class="flex-1 glass hover-lift py-4 rounded-xl text-white font-semibold">
+                Keluar
+              </button>
+            </div>
+          </div>
+        `;
+      }
+      
+      window.checkSpelling = function(correct) {
+        AudioSystem.playClick();
+        
+        const input = document.getElementById('spelling-input');
+        const answer = input.value.trim().toLowerCase();
+        
+        if (answer === correct.toLowerCase()) {
+          score += 15;
+          showToast("✅ Sempurna! +15 XP");
+          AudioSystem.playSuccess();
+          
+          setTimeout(() => {
+            currentQ++;
+            if (currentQ < words.length) {
+              modal.innerHTML = renderGame();
+              setTimeout(() => document.getElementById('spelling-input').focus(), 100);
+            } else {
+              finishGame('Spelling Bee', score);
+            }
+          }, 1500);
+        } else {
+          showToast(`❌ Salah! Jawaban: ${correct}`);
+          AudioSystem.playError();
+          input.value = '';
+          input.focus();
+        }
+      };
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = renderGame();
+      document.body.appendChild(modal);
+      
+      setTimeout(() => {
+        document.getElementById('spelling-input').focus();
+      }, 100);
+    }
+    
+    // GRAMMAR MASTER (SHUFFLED)
+    function startGrammarMaster() {
+      const allQuestions = [
+        { q: "She ___ to school every day.", options: ["go", "goes", "going", "gone"], correct: "goes" },
+        { q: "They ___ playing now.", options: ["is", "am", "are", "be"], correct: "are" },
+        { q: "I have ___ this movie.", options: ["see", "saw", "seen", "seeing"], correct: "seen" },
+        { q: "If I ___ rich, I would travel.", options: ["am", "was", "were", "be"], correct: "were" },
+        { q: "The book ___ by John.", options: ["write", "wrote", "written", "was written"], correct: "was written" },
+        { q: "He ___ his homework yesterday.", options: ["do", "does", "did", "done"], correct: "did" }
+      ];
+      
+      // SHUFFLE QUESTIONS
+      const questions = shuffleArray(allQuestions).slice(0, 5);
+      
+      let currentQ = 0;
+      let score = 0;
+      
+      function renderGame() {
+        const q = questions[currentQ];
+        // SHUFFLE OPTIONS
+        const shuffledOptions = shuffleArray([...q.options]);
+        
+        return `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-white font-display text-2xl font-bold">📝 Grammar Master</h2>
+                <p class="text-purple-300 text-sm">Soal ${currentQ + 1} dari ${questions.length}</p>
+              </div>
+              <div class="level-badge">⭐ ${score}</div>
+            </div>
+            
+            <div class="glass rounded-2xl p-6 mb-6">
+              <p class="text-white text-xl font-semibold mb-4">${q.q}</p>
+              <div class="space-y-3" id="grammar-options">
+                ${shuffledOptions.map((opt, idx) => `
+                  <button onclick="checkGrammar('${opt}', '${q.correct}')" class="w-full glass-strong hover-lift rounded-xl p-4 text-left text-white font-semibold transition-all hover:bg-purple-500/20">
+                    ${String.fromCharCode(65 + idx)}. ${opt}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+            
+            <button onclick="document.querySelector('.fixed.inset-0').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold">
+              Keluar
+            </button>
+          </div>
+        `;
+      }
+      
+      window.checkGrammar = function(selected, correct) {
+        AudioSystem.playClick();
+        
+        const buttons = document.querySelectorAll('#grammar-options button');
+        buttons.forEach(btn => btn.disabled = true);
+        
+        if (selected === correct) {
+          score += 12;
+          showToast("✅ Benar! +12 XP");
+          AudioSystem.playSuccess();
+        } else {
+          showToast(`❌ Salah! Jawaban: ${correct}`);
+          AudioSystem.playError();
+        }
+        
+        setTimeout(() => {
+          currentQ++;
+          if (currentQ < questions.length) {
+            modal.innerHTML = renderGame();
+          } else {
+            finishGame('Grammar Master', score);
+          }
+        }, 1500);
+      };
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = renderGame();
+      document.body.appendChild(modal);
+    }
+    
+    // IDIOM CHALLENGE (SHUFFLED)
+    function startIdiomChallenge() {
+      const allIdioms = [
+        { idiom: "Break the ice", meaning: "Memulai percakapan", options: ["Memecahkan es", "Memulai percakapan", "Berhenti bicara", "Marah"] },
+        { idiom: "Piece of cake", meaning: "Sangat mudah", options: ["Sepotong kue", "Sangat mudah", "Sangat sulit", "Mahal"] },
+        { idiom: "Hit the books", meaning: "Belajar giat", options: ["Memukul buku", "Belajar giat", "Melempar buku", "Baca cepat"] },
+        { idiom: "Under the weather", meaning: "Kurang sehat", options: ["Di bawah cuaca", "Kurang sehat", "Hujan-hujan", "Senang"] },
+        { idiom: "Cost an arm and a leg", meaning: "Sangat mahal", options: ["Kehilangan tangan", "Sangat mahal", "Gratis", "Murah"] },
+        { idiom: "Once in a blue moon", meaning: "Sangat jarang", options: ["Bulan biru", "Sangat jarang", "Sering", "Setiap hari"] }
+      ];
+      
+      // SHUFFLE IDIOMS
+      const idioms = shuffleArray(allIdioms).slice(0, 5);
+      
+      let currentQ = 0;
+      let score = 0;
+      
+      function renderGame() {
+        const idiom = idioms[currentQ];
+        // SHUFFLE OPTIONS
+        const shuffledOptions = shuffleArray([...idiom.options]);
+        
+        return `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-white font-display text-2xl font-bold">💡 Idiom Challenge</h2>
+                <p class="text-purple-300 text-sm">Idiom ${currentQ + 1} dari ${idioms.length}</p>
+              </div>
+              <div class="level-badge">⭐ ${score}</div>
+            </div>
+            
+            <div class="glass rounded-2xl p-8 mb-6 text-center">
+              <p class="text-purple-300 text-sm mb-2">Apa arti dari idiom:</p>
+              <h3 class="text-white text-3xl font-bold mb-4">"${idiom.idiom}"</h3>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3" id="idiom-options">
+              ${shuffledOptions.map((opt, idx) => `
+                <button onclick="checkIdiom('${opt}', '${idiom.meaning}')" class="glass-strong hover-lift rounded-2xl p-4 text-white font-semibold transition-all hover:bg-purple-500/30">
+                  ${opt}
+                </button>
+              `).join('')}
+            </div>
+            
+            <button onclick="document.querySelector('.fixed.inset-0').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-4">
+              Keluar
+            </button>
+          </div>
+        `;
+      }
+      
+      window.checkIdiom = function(selected, correct) {
+        AudioSystem.playClick();
+        
+        const buttons = document.querySelectorAll('#idiom-options button');
+        buttons.forEach(btn => btn.disabled = true);
+        
+        if (selected === correct) {
+          score += 20;
+          showToast("✅ Luar biasa! +20 XP");
+          AudioSystem.playSuccess();
+        } else {
+          showToast(`❌ Salah! Arti: ${correct}`);
+          AudioSystem.playError();
+        }
+        
+        setTimeout(() => {
+          currentQ++;
+          if (currentQ < idioms.length) {
+            modal.innerHTML = renderGame();
+          } else {
+            finishGame('Idiom Challenge', score);
+          }
+        }, 1500);
+      };
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = renderGame();
+      document.body.appendChild(modal);
+    }
+    
+    // CLASS BATTLE
+    function startClassBattle() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-8 max-w-md w-full text-center animate-scale-in border-2 border-red-500/30">
+          <div class="text-6xl mb-4">⚔️</div>
+          <h2 class="text-white font-display text-3xl font-bold mb-2">Class Battle</h2>
+          <p class="text-purple-300 mb-6">Mode multiplayer untuk battle antar tim! Kumpulkan teman-temanmu dan berkompetisi!</p>
+          
+          <div class="glass rounded-xl p-4 mb-6 text-left">
+            <h3 class="text-white font-semibold mb-2">Cara Bermain:</h3>
+            <ul class="text-purple-300 text-sm space-y-1">
+              <li>• Buat 2 tim (minimal 2 orang per tim)</li>
+              <li>• Jawab pertanyaan bergantian</li>
+              <li>• Tim dengan skor tertinggi menang!</li>
+              <li>• Bonus point untuk jawaban cepat</li>
+            </ul>
+          </div>
+          
+          <button onclick="setupBattle()" class="w-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-bold py-3 rounded-xl hover:from-red-400 hover:to-orange-400 transition-all mb-3">
+            Setup Battle
+          </button>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold">
+            Kembali
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      
+      window.setupBattle = function() {
+        AudioSystem.playClick();
+        
+        modal.innerHTML = `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-red-500/30">
+            <h2 class="text-white font-display text-2xl font-bold mb-6">Setup Class Battle</h2>
+            
+            <div class="grid md:grid-cols-2 gap-4 mb-6">
+              <div class="glass rounded-xl p-4">
+                <h3 class="text-red-300 font-semibold mb-3">🔴 Tim Merah</h3>
+                <input type="text" placeholder="Nama Tim Merah" class="w-full glass border border-red-500/30 rounded-lg px-3 py-2 text-white text-sm mb-2 placeholder-purple-400 focus:outline-none">
+                <textarea placeholder="Anggota (pisahkan dengan enter)" rows="4" class="w-full glass border border-red-500/30 rounded-lg px-3 py-2 text-white text-sm placeholder-purple-400 focus:outline-none"></textarea>
+              </div>
+              
+              <div class="glass rounded-xl p-4">
+                <h3 class="text-blue-300 font-semibold mb-3">🔵 Tim Biru</h3>
+                <input type="text" placeholder="Nama Tim Biru" class="w-full glass border border-blue-500/30 rounded-lg px-3 py-2 text-white text-sm mb-2 placeholder-purple-400 focus:outline-none">
+                <textarea placeholder="Anggota (pisahkan dengan enter)" rows="4" class="w-full glass border border-blue-500/30 rounded-lg px-3 py-2 text-white text-sm placeholder-purple-400 focus:outline-none"></textarea>
+              </div>
+            </div>
+            
+            <div class="flex gap-3">
+              <button onclick="startBattleGame()" class="flex-1 bg-gradient-to-r from-red-500 to-blue-500 text-white font-bold py-3 rounded-xl hover:from-red-400 hover:to-blue-400 transition-all">
+                Mulai Battle!
+              </button>
+              <button onclick="this.closest('.fixed').remove()" class="flex-1 glass hover-lift py-3 rounded-xl text-white font-semibold">
+                Batal
+              </button>
+            </div>
+          </div>
+        `;
+      };
+      
+      window.startBattleGame = function() {
+        AudioSystem.playClick();
+        showToast("🎮 Battle dimulai!");
+        AudioSystem.playWin();
+        modal.remove();
+        
+        setTimeout(() => {
+          const battleModal = document.createElement('div');
+          battleModal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4';
+          battleModal.innerHTML = `
+            <div class="glass-strong rounded-3xl p-8 max-w-md w-full text-center animate-scale-in">
+              <h2 class="text-white font-display text-3xl font-bold mb-4">Battle Mode Active!</h2>
+              <div class="flex justify-around mb-6">
+                <div class="text-center">
+                  <div class="text-4xl mb-2">🔴</div>
+                  <p class="text-white font-bold">Tim Merah</p>
+                  <p class="text-red-300 text-3xl font-bold mt-2">0</p>
+                </div>
+                <div class="text-4xl">⚔️</div>
+                <div class="text-center">
+                  <div class="text-4xl mb-2">🔵</div>
+                  <p class="text-white font-bold">Tim Biru</p>
+                  <p class="text-blue-300 text-3xl font-bold mt-2">0</p>
+                </div>
+              </div>
+              <p class="text-purple-300 mb-4">Mode battle sekarang aktif! Guru dapat mengelola pertanyaan dan poin secara manual.</p>
+              <button onclick="this.closest('.fixed').remove()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 rounded-xl">
+                Selesai
+              </button>
+            </div>
+          `;
+          document.body.appendChild(battleModal);
+        }, 500);
+      };
+    }
+    
+    // FAST CLICK (SHUFFLED)
+    function startFastClick() {
+      const allQuestions = [
+        { q: "Cat = ?", correct: "Kucing", options: ["Anjing", "Kucing", "Burung", "Ikan"] },
+        { q: "Red = ?", correct: "Merah", options: ["Biru", "Merah", "Hijau", "Kuning"] },
+        { q: "Good = ?", correct: "Baik", options: ["Buruk", "Baik", "Jelek", "Cantik"] },
+        { q: "Big = ?", correct: "Besar", options: ["Kecil", "Besar", "Tinggi", "Rendah"] },
+        { q: "Hot = ?", correct: "Panas", options: ["Dingin", "Panas", "Hangat", "Sejuk"] },
+        { q: "Small = ?", correct: "Kecil", options: ["Besar", "Kecil", "Tinggi", "Lebar"] }
+      ];
+      
+      // SHUFFLE QUESTIONS
+      const questions = shuffleArray(allQuestions).slice(0, 5);
+      
+      let currentQ = 0;
+      let score = 0;
+      let timeLeft = 30;
+      let timerInterval;
+      
+      function renderGame() {
+        const q = questions[currentQ];
+        // SHUFFLE OPTIONS
+        const shuffledOptions = shuffleArray([...q.options]);
+        
+        return `
+          <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-cyan-500/30 my-4">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="text-white font-display text-2xl font-bold">⚡ Fast Click</h2>
+                <p class="text-purple-300 text-sm">Soal ${currentQ + 1} dari ${questions.length}</p>
+              </div>
+              <div class="flex gap-3">
+                <div class="level-badge bg-gradient-to-r from-red-500 to-orange-500">⏱️ <span id="fast-timer">${timeLeft}</span>s</div>
+                <div class="level-badge">⭐ ${score}</div>
+              </div>
+            </div>
+            
+            <div class="glass rounded-2xl p-8 mb-6 text-center">
+              <h3 class="text-white text-4xl font-bold">${q.q}</h3>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-3" id="fast-options">
+              ${shuffledOptions.map((opt, idx) => `
+                <button onclick="checkFastClick('${opt}', '${q.correct}')" class="glass-strong hover-lift rounded-2xl p-6 text-white font-bold text-xl transition-all hover:bg-cyan-500/30">
+                  ${opt}
+                </button>
+              `).join('')}
+            </div>
+            
+            <button onclick="stopFastClick(); document.querySelector('.fixed.inset-0').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-4">
+              Berhenti
+            </button>
+          </div>
+        `;
+      }
+      
+      window.stopFastClick = function() {
+        if (timerInterval) clearInterval(timerInterval);
+      };
+      
+      window.checkFastClick = function(selected, correct) {
+        AudioSystem.playClick();
+        
+        const buttons = document.querySelectorAll('#fast-options button');
+        buttons.forEach(btn => btn.disabled = true);
+        
+        if (selected === correct) {
+          const bonus = Math.ceil(timeLeft / 5);
+          score += 10 + bonus;
+          showToast(`✅ Benar! +${10 + bonus} XP (Bonus kecepatan!)`);
+          AudioSystem.playSuccess();
+        } else {
+          showToast(`❌ Salah! Jawaban: ${correct}`);
+          AudioSystem.playError();
+        }
+        
+        setTimeout(() => {
+          currentQ++;
+          if (currentQ < questions.length) {
+            timeLeft = 30;
+            modal.innerHTML = renderGame();
+            startTimer();
+          } else {
+            stopFastClick();
+            finishGame('Fast Click', score);
+          }
+        }, 1000);
+      };
+      
+      function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        
+        timerInterval = setInterval(() => {
+          timeLeft--;
+          const timerEl = document.getElementById('fast-timer');
+          if (timerEl) timerEl.textContent = timeLeft;
+          
+          if (timeLeft <= 0) {
+            stopFastClick();
+            showToast("⏰ Waktu habis!");
+            AudioSystem.playError();
+            setTimeout(() => {
+              currentQ++;
+              if (currentQ < questions.length) {
+                timeLeft = 30;
+                modal.innerHTML = renderGame();
+                startTimer();
+              } else {
+                finishGame('Fast Click', score);
+              }
+            }, 1500);
+          }
+        }, 1000);
+      }
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = renderGame();
+      document.body.appendChild(modal);
+      
+      startTimer();
+    }
+    
+    // LUCKY SPINNER (IMPROVED VERSION)
+    function startLuckySpinner() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-amber-500/30 my-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-display text-2xl font-bold">🎯 Lucky Spinner</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="glass rounded-2xl p-6 mb-6">
+            <h3 class="text-white font-semibold mb-3">Masukkan Nama Peserta</h3>
+            <textarea id="spinner-names" rows="6" placeholder="Masukkan nama (satu nama per baris)&#10;Contoh:&#10;Ahmad&#10;Budi&#10;Citra" 
+              class="w-full glass border border-amber-500/30 rounded-xl px-4 py-3 text-white placeholder-purple-400 focus:outline-none focus:border-amber-400"></textarea>
+          </div>
+          
+          <div id="spinner-container" class="hidden mb-6 flex flex-col items-center">
+            <div class="relative mb-4">
+              <div class="spinner-pointer"></div>
+              <div class="spinner-wheel" id="spinner-wheel">
+                <div class="spinner-center">🎯</div>
+              </div>
+            </div>
+            <div id="spinner-names-display" class="text-center mb-4"></div>
+          </div>
+          
+          <div id="spinner-result" class="glass rounded-2xl p-8 mb-6 text-center hidden">
+            <p class="text-purple-300 text-sm mb-2">Pemenangnya adalah:</p>
+            <h3 id="spinner-winner" class="text-white text-5xl font-bold mb-4">???</h3>
+            <div class="text-6xl animate-pulse">🎉</div>
+          </div>
+          
+          <button onclick="spinWheel()" id="spin-button" class="w-full bg-gradient-to-r from-amber-400 to-orange-500 text-white font-bold py-4 rounded-xl hover:from-amber-300 hover:to-orange-400 transition-all mb-3">
+            🎯 Putar Roda!
+          </button>
+          
+          <button onclick="resetSpinner()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold">
+            Reset
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+      
+      window.spinWheel = function() {
+        AudioSystem.playClick();
+        
+        const textarea = document.getElementById('spinner-names');
+        const names = textarea.value.trim().split('\n').filter(name => name.trim() !== '');
+        
+        if (names.length === 0) {
+          showToast("Masukkan minimal 1 nama! 📝");
+          AudioSystem.playError();
+          return;
+        }
+        
+        // Show spinner
+        document.getElementById('spinner-container').classList.remove('hidden');
+        document.getElementById('spin-button').disabled = true;
+        document.getElementById('spinner-result').classList.add('hidden');
+        
+        // Create wheel segments
+        const wheel = document.getElementById('spinner-wheel');
+        const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8', '#F7DC6F', '#BB8FCE', '#85C1E2', '#F8B739', '#52B788'];
+        
+        wheel.innerHTML = '<div class="spinner-center">🎯</div>';
+        const segmentAngle = 360 / names.length;
+        
+        names.forEach((name, index) => {
+          const segment = document.createElement('div');
+          segment.className = 'spinner-segment';
+          segment.style.background = colors[index % colors.length];
+          segment.style.transform = `rotate(${index * segmentAngle}deg)`;
+          wheel.appendChild(segment);
+        });
+        
+        // Display names
+        document.getElementById('spinner-names-display').innerHTML = `
+          <div class="flex flex-wrap gap-2 justify-center">
+            ${names.map((name, idx) => `
+              <span class="px-3 py-1 rounded-full text-white text-sm font-semibold" style="background: ${colors[idx % colors.length]}">
+                ${name}
+              </span>
+            `).join('')}
+          </div>
+        `;
+        
+        // Spin animation
+        const randomRotation = 1440 + Math.random() * 360; // 4 full rotations + random
+        const winnerIndex = Math.floor((360 - (randomRotation % 360)) / segmentAngle) % names.length;
+        const winner = names[winnerIndex];
+        
+        wheel.style.transition = 'transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99)';
+        wheel.style.transform = `rotate(${randomRotation}deg)`;
+        
+        // Play spin sound
+        AudioSystem.playSpin();
+        
+        // Show result after spin
+        setTimeout(() => {
+          wheel.style.transition = 'none';
+          document.getElementById('spinner-result').classList.remove('hidden');
+          document.getElementById('spinner-winner').textContent = winner;
+          document.getElementById('spin-button').disabled = false;
+          
+          showToast(`🎉 ${winner} terpilih!`);
+          AudioSystem.playWin();
+        }, 4000);
+      };
+      
+      window.resetSpinner = function() {
+        AudioSystem.playClick();
+        
+        document.getElementById('spinner-names').value = '';
+        document.getElementById('spinner-result').classList.add('hidden');
+        document.getElementById('spinner-container').classList.add('hidden');
+        const wheel = document.getElementById('spinner-wheel');
+        wheel.style.transform = 'rotate(0deg)';
+      };
+    }
+    
+    // FINISH GAME
+    async function finishGame(gameName, finalScore) {
+      if (currentUser && window.dataSdk) {
+        const updatedUser = {
+          ...currentUser,
+          games_played: (currentUser.games_played || 0) + 1,
+          total_score: (currentUser.total_score || 0) + finalScore,
+          best_streak: Math.max((currentUser.best_streak || 0), finalScore / 10),
+          last_active: new Date().toISOString()
+        };
+        
+        await window.dataSdk.update(updatedUser);
+        currentUser = updatedUser;
+        updateAllDisplays();
+      }
+      
+      const modal = document.querySelector('.fixed.inset-0');
+      if (modal) {
+        modal.innerHTML = `
+          <div class="glass-strong rounded-3xl p-8 max-w-md w-full text-center animate-scale-in border-2 border-purple-500/30">
+            <div class="text-6xl mb-4">🎉</div>
+            <h2 class="text-white font-display text-3xl font-bold mb-2">${gameName} Selesai!</h2>
+            <p class="text-purple-300 mb-4">Skor Akhir</p>
+            <div class="glass rounded-xl p-6 mb-6">
+              <p class="text-white text-5xl font-bold mb-2">⭐ ${finalScore}</p>
+              <p class="text-purple-300 text-sm">XP earned</p>
+            </div>
+            <button onclick="this.closest('.fixed').remove()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-6 py-4 rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all">
+              Luar Biasa! 🎊
+            </button>
+          </div>
+        `;
+        AudioSystem.playWin();
+      }
+    }
+    
+    // ==========================================
+    // PROFILE & SETTINGS
+    // ==========================================
+    
+    function editProfile() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-8 max-w-md w-full animate-scale-in border-2 border-purple-500/30">
+          <h2 class="text-white font-display text-2xl font-bold mb-6">Edit Profile</h2>
+          
+          <div class="mb-6">
+            <label for="edit-name" class="text-purple-200 text-sm mb-2 block">Nama</label>
+            <input type="text" id="edit-name" value="${currentUser?.player_name || ''}" 
+              class="w-full glass border border-purple-500/30 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-purple-400">
+          </div>
+          
+          <div class="flex gap-3">
+            <button onclick="saveProfile()" class="flex-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all">
+              Simpan
+            </button>
+            <button onclick="this.closest('.fixed').remove()" class="flex-1 glass hover-lift py-3 rounded-xl text-white font-semibold">
+              Batal
+            </button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    window.saveProfile = async function() {
+      AudioSystem.playClick();
+      
+      const newName = document.getElementById('edit-name').value.trim();
+      
+      if (!newName) {
+        showToast("Nama tidak boleh kosong! 📝");
+        AudioSystem.playError();
+        return;
+      }
+      
+      if (currentUser && window.dataSdk) {
+        const updatedUser = {
+          ...currentUser,
+          player_name: newName,
+          last_active: new Date().toISOString()
+        };
+        
+        const result = await window.dataSdk.update(updatedUser);
+        if (result.isOk) {
+          currentUser = updatedUser;
+          document.querySelector('.fixed.inset-0').remove();
+          updateAllDisplays();
+          showToast("✅ Profile berhasil diupdate!");
+          AudioSystem.playSuccess();
+        } else {
+          showToast("Gagal menyimpan profile.");
+          AudioSystem.playError();
+        }
+      }
+    };
+    
+    function showSettings() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-md w-full animate-scale-in border-2 border-purple-500/30 my-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-display text-2xl font-bold">⚙️ Settings</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="space-y-3">
+            <div class="glass-strong rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-white font-semibold">Background Music</p>
+                  <p class="text-purple-300 text-xs">Musik latar aplikasi</p>
+                </div>
+                <button onclick="toggleMusic()" class="w-12 h-6 rounded-full ${AudioSystem.musicEnabled ? 'bg-purple-500' : 'bg-gray-600'} relative cursor-pointer transition-colors">
+                  <div class="absolute top-1 ${AudioSystem.musicEnabled ? 'right-1' : 'left-1'} w-4 h-4 bg-white rounded-full transition-all"></div>
+                </button>
+              </div>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-white font-semibold">Sound Effects</p>
+                  <p class="text-purple-300 text-xs">Efek suara game</p>
+                </div>
+                <button onclick="toggleSFX()" class="w-12 h-6 rounded-full ${AudioSystem.sfxEnabled ? 'bg-purple-500' : 'bg-gray-600'} relative cursor-pointer transition-colors">
+                  <div class="absolute top-1 ${AudioSystem.sfxEnabled ? 'right-1' : 'left-1'} w-4 h-4 bg-white rounded-full transition-all"></div>
+                </button>
+              </div>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-white font-semibold">Notifikasi</p>
+                  <p class="text-purple-300 text-xs">Pengingat belajar harian</p>
+                </div>
+                <div class="w-12 h-6 rounded-full bg-purple-500 relative cursor-pointer">
+                  <div class="absolute top-1 right-1 w-4 h-4 bg-white rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-6">
+            Tutup
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    function showDevelopmentTeam() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-3xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-display text-2xl md:text-3xl font-bold">👥 Tim Pengembang</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="glass rounded-2xl p-6 mb-6">
+            <p class="text-purple-300 text-sm leading-relaxed">
+              Aplikasi DAKAHU SmartEnglish dikembangkan oleh tim yang terdiri atas mahasiswa Universitas Hamzanwadi yang memiliki minat dan kepedulian terhadap pengembangan media pembelajaran berbasis teknologi, khususnya dalam pembelajaran Bahasa Inggris di tingkat Sekolah Menengah Pertama (SMP). Tim pengembang bekerja secara kolaboratif dalam merancang konsep, menyusun materi, serta mengembangkan fitur aplikasi agar sesuai dengan kebutuhan peserta didik dan tujuan pembelajaran.
+            </p>
+          </div>
+          
+          <div class="space-y-4">
+            <!-- Dani Hairullah -->
+            <div class="glass-strong rounded-2xl p-6 hover-lift">
+              <div class="flex flex-col md:flex-row gap-4">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhtWpcnFXcIFiwI-MdDWaj3XMMtMM8mnDyw4Ev2AqUU5i4VaYHe_VzPaX9dlNZJpGEeEZrsAMriKXz9MxU5De5a0Vz4FCf4sz11hLKtPALlxjBMV8uMQMNoyCUeQC7nVEYH4uGKa3Gn4DpLTTaiGZyIybSfZNOAw7f5NWcB9Uy4IV6ezSSJd9KjlkOwwZU/s1988/BANNER%20IMTIHAN%205,52%20X%204%20cm%20(6).png" 
+                     alt="Dani Hairullah" 
+                     onclick="viewFullPhoto(this.src, 'Dani Hairullah')"
+                     class="w-32 h-32 rounded-xl object-contain cursor-pointer hover:scale-105 transition-transform mx-auto md:mx-0 bg-white/5"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'128\' height=\'128\'%3E%3Crect fill=\'%23a78bfa\' width=\'128\' height=\'128\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'48\' fill=\'white\'%3EDH%3C/text%3E%3C/svg%3E';">
+                <div class="flex-1">
+                  <h3 class="text-white font-bold text-xl mb-1">Dani Hairullah</h3>
+                  <p class="text-purple-300 font-semibold mb-3">Konseptor Aplikasi</p>
+                  <p class="text-purple-200 text-sm leading-relaxed">
+                    Dani Hairullah merupakan mahasiswa Universitas Hamzanwadi yang berperan sebagai ketua tim pengembang. Ia bertanggung jawab dalam merancang konsep utama aplikasi DAKAHU SmartEnglish, menentukan arah pengembangan, serta memastikan kesesuaian aplikasi dengan tujuan pembelajaran Bahasa Inggris tingkat SMP. Selain itu, Dani Hairullah terlibat dalam perancangan struktur materi dan integrasi pendekatan pembelajaran interaktif serta game-based learning.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Minal Awwalin -->
+            <div class="glass-strong rounded-2xl p-6 hover-lift">
+              <div class="flex flex-col md:flex-row gap-4">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjsMD5TUqwyaDiWlAuQBaF4NBmCAiYQ5m53gxLvAcNZqVG6FaCyS9aH-TOx73w41DrSY23a9R0dlj92IQNb4WVM03fGF45n33Mx1V3QkFScsJsvOOBtOnUK65FKWc_A4QwNICWhJfiKBQkGBe7kkEh5a0jkU1GDgNBcHvegteE9AhURRonO99l9jFQuZXM/s2016/BANNER%20IMTIHAN%205,52%20X%204%20cm%20(7).png" 
+                     alt="Minal Awwalin" 
+                     onclick="viewFullPhoto(this.src, 'Minal Awwalin Alhudawi Adnan')"
+                     class="w-32 h-32 rounded-xl object-contain cursor-pointer hover:scale-105 transition-transform mx-auto md:mx-0 bg-white/5"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'128\' height=\'128\'%3E%3Crect fill=\'%23ec4899\' width=\'128\' height=\'128\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'48\' fill=\'white\'%3EMA%3C/text%3E%3C/svg%3E';">
+                <div class="flex-1">
+                  <h3 class="text-white font-bold text-xl mb-1">Minal Awwalin Alhudawi Adnan</h3>
+                  <p class="text-purple-300 font-semibold mb-3">Pengembang Materi Pembelajaran</p>
+                  <p class="text-purple-200 text-sm leading-relaxed">
+                    Minal Awwalin Alhudawi Adnan merupakan mahasiswa Universitas Hamzanwadi yang berperan dalam pengembangan dan penyusunan materi pembelajaran Bahasa Inggris. Ia bertanggung jawab dalam menyesuaikan materi dengan kompetensi dasar Bahasa Inggris SMP, menyusun konten pembelajaran yang sistematis dan mudah dipahami, serta memastikan penggunaan bahasa yang sesuai dengan tingkat kemampuan peserta didik. Kontribusinya berfokus pada kualitas akademik dan pedagogis materi yang disajikan dalam aplikasi.
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Kamarudin Sani -->
+            <div class="glass-strong rounded-2xl p-6 hover-lift">
+              <div class="flex flex-col md:flex-row gap-4">
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjp6y9lI1EuTzy3-ak3p58ceW5mmFh1Z8Y-bNyDMLsdtT3aFizzMIravSQ-pJpH5aJdXGOKaZ0u7bI4od90p52fzmC4U7S690HHNPBvKgqGQEaGdsGr6ESx0A9jkXcLoHxYxt4Xo3ENE8OPK5daPgD6USOFi93Nv6dyr79Rj9eQe4ftXYbbm3-nAoBFcio/s1981/BANNER%20IMTIHAN%205,52%20X%204%20cm%20(8).png" 
+                     alt="Kamarudin Sani" 
+                     onclick="viewFullPhoto(this.src, 'Kamarudin Sani')"
+                     class="w-32 h-32 rounded-xl object-contain cursor-pointer hover:scale-105 transition-transform mx-auto md:mx-0 bg-white/5"
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'128\' height=\'128\'%3E%3Crect fill=\'%2310b981\' width=\'128\' height=\'128\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-size=\'48\' fill=\'white\'%3EKS%3C/text%3E%3C/svg%3E';">
+                <div class="flex-1">
+                  <h3 class="text-white font-bold text-xl mb-1">Kamarudin Sani</h3>
+                  <p class="text-purple-300 font-semibold mb-3">Desain Interaktif dan Evaluasi Pembelajaran</p>
+                  <p class="text-purple-200 text-sm leading-relaxed">
+                    Kamarudin Sani merupakan mahasiswa Universitas Hamzanwadi yang berperan dalam perancangan aspek interaktif aplikasi serta evaluasi pembelajaran. Ia bertanggung jawab dalam pengembangan konsep game edukatif, sistem latihan dan evaluasi, serta mekanisme umpan balik yang mendorong motivasi belajar siswa. Selain itu, Kamarudin Sani turut berperan dalam memastikan aplikasi berjalan secara efektif dan efisien sebagai media pembelajaran.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-6">
+            Tutup
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    function viewFullPhoto(src, name) {
+      AudioSystem.playClick();
+      
+      const photoModal = document.createElement('div');
+      photoModal.className = 'fixed inset-0 bg-black/95 flex items-center justify-center z-[60] p-4';
+      photoModal.innerHTML = `
+        <div class="max-w-4xl w-full animate-scale-in">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="text-white font-bold text-xl">${name}</h3>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-4xl hover:text-purple-300">×</button>
+          </div>
+          <img src="${src}" alt="${name}" class="w-full h-auto rounded-2xl object-contain max-h-[80vh]" onclick="this.closest('.fixed').remove()">
+          <p class="text-purple-300 text-center mt-4 text-sm">Klik foto untuk menutup</p>
+        </div>
+      `;
+      document.body.appendChild(photoModal);
+    }
+    
+    function showAbout() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-8 max-w-md w-full text-center animate-scale-in border-2 border-purple-500/30 my-4">
+          <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgbpY26BWBVxaHrdPqP7cZSKu-HYqyEAzSPhbyyxmEPo8UayVcvcUXjI5mTo9PIdFuDLHt0Ro5-nzOklC50Qw8HN6Eq3cZAxqWq7nGUWYZFgLy8dJ0Wz_cMM9DQ8nfgzOWLnLGWYWAnfXW1q-oRVMJO3A9JY2vOerOqxnq3EZwcRrHsn5Cs9Nc1W752aas/s320/Logo%20DAKAHU%20SmartEnglish%20(2).png" 
+               alt="Logo" 
+               class="h-24 mx-auto mb-4"
+               onerror="this.style.display='none';">
+          <h3 class="text-white font-display text-3xl font-bold mb-3">DAKAHU SmartEnglish</h3>
+          <p class="text-purple-300 mb-6 text-sm">with DAKAHU Powered Learning</p>
+          
+          <div class="text-left space-y-3 mb-6">
+            <div class="glass rounded-xl p-4">
+              <p class="text-purple-200 text-xs font-semibold mb-1">Version</p>
+              <p class="text-white text-sm">1.0.0 Production</p>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <p class="text-purple-200 text-xs font-semibold mb-1">Developer</p>
+              <p class="text-white text-sm">DAKAHU Education Team</p>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <p class="text-purple-200 text-xs font-semibold mb-1">Institution</p>
+              <p class="text-white text-sm">Universitas Hamzanwadi</p>
+            </div>
+            <div class="glass rounded-xl p-4">
+              <p class="text-purple-200 text-xs font-semibold mb-1">Mission</p>
+              <p class="text-white text-sm">Membuat pembelajaran Bahasa Inggris yang menyenangkan, engaging, dan accessible untuk semua orang</p>
+            </div>
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold px-6 py-3 rounded-xl hover:from-purple-400 hover:to-pink-400 transition-all">
+            Tutup
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    function showHelp() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-2xl w-full animate-scale-in border-2 border-purple-500/30 my-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-display text-2xl font-bold">❓ Help & Support</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="space-y-4">
+            <div class="glass-strong rounded-xl p-4">
+              <h3 class="text-white font-semibold mb-2">📚 Cara Menggunakan</h3>
+              <ul class="text-purple-300 text-sm space-y-1">
+                <li>• Mulai dengan onboarding dan masukkan nama</li>
+                <li>• Jelajahi menu Learn untuk pelajaran</li>
+                <li>• Latihan di Practice Hub</li>
+                <li>• Main game di English Quest</li>
+                <li>• Lihat progress di Profile</li>
+              </ul>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4">
+              <h3 class="text-white font-semibold mb-2">🎮 Game Modes</h3>
+              <ul class="text-purple-300 text-sm space-y-1">
+                <li>• <strong>Vocabulary Quest:</strong> Match kata dengan arti</li>
+                <li>• <strong>Spelling Bee:</strong> Tulis ejaan yang benar</li>
+                <li>• <strong>Grammar Master:</strong> Isi kata yang tepat</li>
+                <li>• <strong>Idiom Challenge:</strong> Pelajari idiom</li>
+                <li>• <strong>Class Battle:</strong> Tim vs Tim</li>
+                <li>• <strong>Fast Click:</strong> Quiz cepat</li>
+                <li>• <strong>Lucky Spinner:</strong> Random player selector</li>
+              </ul>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4">
+              <h3 class="text-white font-semibold mb-2">💾 Data Tersimpan</h3>
+              <p class="text-purple-300 text-sm">Semua progress kamu tersimpan otomatis di Canva Sheet. Klik tombol Data di atas untuk melihat data kamu!</p>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4">
+              <h3 class="text-white font-semibold mb-2">📧 Kontak</h3>
+              <p class="text-purple-300 text-sm">Butuh bantuan? Hubungi tim DAKAHU melalui email atau media sosial.</p>
+            </div>
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-6">
+            Tutup
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    function viewAllBadges() {
+      AudioSystem.playClick();
+      showToast("Melihat semua badges... 🏆");
+    }
+    
+    function showNotifications() {
+      AudioSystem.playClick();
+      
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-4 overflow-y-auto';
+      modal.innerHTML = `
+        <div class="glass-strong rounded-3xl p-6 max-w-md w-full animate-scale-in border-2 border-purple-500/30 my-4">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-white font-display text-2xl font-bold">🔔 Notifikasi</h2>
+            <button onclick="this.closest('.fixed').remove()" class="text-white text-3xl hover:text-purple-300">×</button>
+          </div>
+          
+          <div class="space-y-3">
+            <div class="glass-strong rounded-xl p-4 hover-lift">
+              <div class="flex items-start gap-3">
+                <div class="text-3xl">🎉</div>
+                <div class="flex-1">
+                  <p class="text-white font-semibold text-sm">Selamat Datang!</p>
+                  <p class="text-purple-300 text-xs">Mulai belajar sekarang dan raih XP!</p>
+                  <p class="text-purple-400 text-xs mt-1">Baru saja</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4 hover-lift">
+              <div class="flex items-start gap-3">
+                <div class="text-3xl">🔥</div>
+                <div class="flex-1">
+                  <p class="text-white font-semibold text-sm">Daily Streak!</p>
+                  <p class="text-purple-300 text-xs">Jangan lupa belajar hari ini!</p>
+                  <p class="text-purple-400 text-xs mt-1">1 jam yang lalu</p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="glass-strong rounded-xl p-4 hover-lift">
+              <div class="flex items-start gap-3">
+                <div class="text-3xl">🎮</div>
+                <div class="flex-1">
+                  <p class="text-white font-semibold text-sm">Game Baru!</p>
+                  <p class="text-purple-300 text-xs">Lucky Spinner sudah tersedia!</p>
+                  <p class="text-purple-400 text-xs mt-1">2 jam yang lalu</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <button onclick="this.closest('.fixed').remove()" class="w-full glass hover-lift py-3 rounded-xl text-white font-semibold mt-6">
+            Tutup
+          </button>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+    
+    // ==========================================
+    // UTILITY FUNCTIONS
+    // ==========================================
+    
+    function showToast(message) {
+      const existingToast = document.querySelector('.toast-message');
+      if (existingToast) existingToast.remove();
+      
+      const toast = document.createElement('div');
+      toast.className = 'toast-message fixed top-20 left-1/2 transform -translate-x-1/2 glass-strong px-6 py-3 rounded-xl text-white font-semibold z-50 animate-slide-in-up';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => toast.remove(), 3000);
+    }
+    
+    // ==========================================
+    // STARTUP
+    // ==========================================
+    
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9bbd86ba81afea7a',t:'MTc2ODA2MjI4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
